@@ -40,6 +40,10 @@ from bi_interp.wsp_empirical import (
     analyze_exp8_qwen_loop_surgical_edit,
     compare_exp1_all_games,
 )
+from bi_interp.simulator import (
+    simulate_kinetix_ramp_rollout,
+    simulate_breakout_ball_catch,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS_DIR = ROOT / "assets"
@@ -850,6 +854,132 @@ def render_fig5_graphify_architecture_map(
     return out_path
 
 
+def render_fig6_step_by_step_simulation() -> Path:
+    """Figure 6: Human-Understandable Step-by-Step Closed-Loop Simulation (Kinetix & Breakout)."""
+    sim1 = simulate_kinetix_ramp_rollout(ARTIFACT_DIR)
+    sim2 = simulate_breakout_ball_catch(ARTIFACT_DIR)
+
+    fig = plt.figure(figsize=(13.2, 5.1), facecolor=PAPER_BG)
+    gs = gridspec.GridSpec(1, 2, width_ratios=[1.18, 1.0], wspace=0.25)
+
+    # ------------------------------------------------------------------
+    # Panel A: Kinetix Car-on-Ramp Step-by-Step Trajectory (t=0..33)
+    # ------------------------------------------------------------------
+    ax0 = fig.add_subplot(gs[0])
+    style_axis(ax0, grid_axis="both")
+
+    steps = sim1["wsp_edited_trace"]
+    ppo_steps = sim1["ppo_unedited_trace"]
+    t_vals = [s["t"] for s in steps]
+    x_edit = [s["x_body"] for s in steps]
+    x_ppo = [s["x_body"] for s in ppo_steps]
+
+    # Physical track zones (horizontal spans on y-axis = x_body position)
+    ax0.axhspan(3.80, 4.15, color="#dce6f2", alpha=0.55, zorder=1)
+    ax0.axhspan(1.35, 2.15, color="#efe6d5", alpha=0.55, zorder=1)
+    ax0.axhspan(0.95, 1.35, color="#f9d8d6", alpha=0.65, zorder=1)
+    ax0.axhspan(0.40, 0.95, color="#d8ece4", alpha=0.65, zorder=1)
+
+    ax0.text(0.6, 3.97, "Right Wall Zone (x > 3.80)", fontsize=7.1, color=NAVY, fontweight="bold")
+    ax0.text(0.6, 1.88, "Upward Ramp Slope (x in [1.35, 2.15])", fontsize=7.0, color=SLATE)
+    ax0.text(0.6, 1.11, "Red Hazard Strip (x in [0.95, 1.35])", fontsize=7.0, color=CRIMSON, fontweight="bold")
+    ax0.text(0.6, 0.68, "Green Goal Zone (x < 0.95 -> u127 = -1)", fontsize=7.1, color=SAGE, fontweight="bold")
+
+    ax0.plot(t_vals, x_ppo, color=CRIMSON, lw=2.0, ls="--", label="Unedited PPO (ppo_seed0.npz): stalls at x=1.76", zorder=3)
+    ax0.plot(t_vals, x_edit, color=NAVY, lw=2.5, label="Edited Actor (51-stmt subgame graft): clears ramp", zorder=4)
+
+    # Highlight key phase transition points on the Edited Actor trajectory
+    milestones = [
+        (0, x_edit[0], "t=0: Start (x=2.25)\nu124=-1, u127=+1\nOverride (+1,-1): Reverse Right", (2.2, 2.58), NAVY),
+        (13, x_edit[13], "t=13: Hits Wall (x=3.88)\nu124 flips +1 -> Override (-1,+1)\nFull Drive Left!", (13.8, 3.52), NAVY),
+        (19, x_edit[19], "t=19: Fast (v_x=-1.81)\nu126 latches Full Left", (20.5, 2.85), AMBER),
+        (26, x_edit[26], "t=26: Clears Red Strip (x=0.91)\nu127 flips -1 -> Override (-1,-1)\nCancels bias to exact 0.0", (17.5, 0.48), SAGE),
+    ]
+    for mt, mx, mlabel, (tx, ty), mcol in milestones:
+        ax0.scatter([mt], [mx], color=mcol, s=42, zorder=6, edgecolor="#ffffff", linewidth=0.9)
+        ax0.annotate(
+            mlabel,
+            xy=(mt, mx),
+            xytext=(tx, ty),
+            arrowprops=dict(arrowstyle="->", color=mcol, lw=0.9),
+            fontsize=6.9,
+            bbox=dict(boxstyle="round,pad=0.2", fc=PAPER_BG, ec=mcol, lw=0.75),
+            zorder=7,
+        )
+
+    ax0.set_xlim(-0.5, 34.0)
+    ax0.set_ylim(0.35, 4.20)
+    ax0.set_xlabel("Simulation timestep t (closed-loop physics rollout)")
+    ax0.set_ylabel("Car horizontal position x_body (meters)")
+    ax0.set_title("A. Scenario 1: Kinetix Car-on-Ramp Rollout (t = 0..33)", loc="left", pad=8)
+    ax0.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper right", fontsize=7.1)
+
+    # ------------------------------------------------------------------
+    # Panel B: MinAtar Breakout Wall-Reflection Lookahead (t=0..6)
+    # ------------------------------------------------------------------
+    ax1 = fig.add_subplot(gs[1])
+    style_axis(ax1, grid_axis="both")
+
+    frames = sim2["frames"]
+    b_cols = [f["ball_col"] for f in frames]
+    b_rows = [f["ball_row"] for f in frames]
+    hand_cols = [f["hand_paddle_col"] for f in frames]
+    myop_cols = [f["myopic_paddle_col"] for f in frames]
+
+    # Plot ball path on the 10x10 grid
+    ax1.plot(b_cols, b_rows, color=AMBER, lw=2.2, marker="o", ms=6.5, label="Ball trajectory (bounces off right wall col 9)", zorder=5)
+    for f in frames:
+        t_i, r_i, c_i = f["t"], f["ball_row"], f["ball_col"]
+        dx_lbl = -0.55 if c_i >= 8 else 0.38
+        dy_lbl = 0.05
+        ax1.text(c_i + dx_lbl, r_i + dy_lbl, f"t={t_i}", fontsize=7.0, color="#7e4d09", fontweight="bold", zorder=6)
+
+    # Plot hand.npz paddle vs myopic paddle positions indexed by timestep t (mapped cleanly to y in [8.3, 9.6])
+    y_hand = [8.55 + 0.12 * f["t"] for f in frames]
+    y_myop = [8.55 + 0.12 * f["t"] for f in frames]
+    ax1.plot(hand_cols, y_hand, color=NAVY, lw=2.2, marker="s", ms=5.5, label="Zero-shot hand.npz paddle (moves LEFT at t=0 -> catches col 4)", zorder=6)
+    ax1.plot(myop_cols, y_myop, color=CRIMSON, lw=1.9, ls="--", marker="^", ms=5.5, label="Myopic ball-chaser (lured RIGHT to col 9 -> misses at col 5)", zorder=5)
+
+    ax1.annotate(
+        "t=0: Ball at (1,8) moving RIGHT,\nbut W1 u0 reads wall bounce c*=4.0\n-> hand.npz moves LEFT (col 7->4)!",
+        xy=(7, 8.55),
+        xytext=(0.25, 3.1),
+        arrowprops=dict(arrowstyle="->", color=NAVY, lw=0.95),
+        fontsize=7.0,
+        bbox=dict(boxstyle="round,pad=0.22", fc=PAPER_BG, ec=NAVY, lw=0.75),
+        zorder=8,
+    )
+    ax1.annotate(
+        "t=6 Intercept (row 8, col 4):\nhand.npz waiting at col 4 (CAUGHT)\nMyopic lagging at col 5 (MISSED)",
+        xy=(4, 8.0),
+        xytext=(0.25, 6.2),
+        arrowprops=dict(arrowstyle="->", color=SAGE, lw=0.95),
+        fontsize=7.0,
+        bbox=dict(boxstyle="round,pad=0.22", fc=PAPER_BG, ec=SAGE, lw=0.75),
+        zorder=8,
+    )
+
+    ax1.axhspan(8.35, 9.55, color="#e8e5dc", alpha=0.55, zorder=1)
+    ax1.text(0.15, 8.85, "Paddle Band\n(t=0 -> t=6)", fontsize=6.9, color=SLATE)
+    ax1.axvline(9.0, color=BORDER_COLOR, lw=1.5, ls=":")
+    ax1.text(9.05, 0.6, "Right\nWall", fontsize=6.9, color=SLATE)
+
+    ax1.set_xlim(-0.2, 9.8)
+    ax1.set_ylim(9.7, 0.2)  # Invert y so row 0 is top, row 9 (paddle) is bottom
+    ax1.set_xticks(range(10))
+    ax1.set_yticks(range(10))
+    ax1.set_xlabel("Breakout grid column c (0..9)")
+    ax1.set_ylabel("Breakout grid row r (0 = top, 8 = intercept, 9 = paddle)")
+    ax1.set_title("B. Scenario 2: Breakout 815-Weight Lookahead (t = 0..6)", loc="left", pad=8)
+    ax1.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper left", fontsize=6.9)
+
+    fig.subplots_adjust(left=0.05, right=0.98, top=0.88, bottom=0.13)
+    out_path = ASSETS_DIR / "fig6_step_by_step_simulation.svg"
+    fig.savefig(out_path, format="svg", facecolor=PAPER_BG)
+    plt.close(fig)
+    return out_path
+
+
 def main() -> None:
     configure_matplotlib_style()
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
@@ -861,7 +991,8 @@ def main() -> None:
     f3 = render_fig3_kinetix_subgame_graft()
     f4 = render_fig4_sycophancy_and_qwen_loops()
     f5 = render_fig5_graphify_architecture_map(G, communities, labels)
-    for p in (f1, f2, f3, f4, f5):
+    f6 = render_fig6_step_by_step_simulation()
+    for p in (f1, f2, f3, f4, f5, f6):
         print(f"Generated SVG: {p.relative_to(ROOT)} ({p.stat().st_size:,} bytes)")
 
 

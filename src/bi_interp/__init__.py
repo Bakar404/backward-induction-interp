@@ -48,8 +48,13 @@ from bi_interp.wsp_empirical import (
     analyze_exp7_sycophancy_subgame,
     analyze_exp8_qwen_loop_surgical_edit,
 )
+from bi_interp.simulator import (
+    simulate_kinetix_ramp_rollout,
+    simulate_breakout_ball_catch,
+    simulate_sycophancy_and_loop_walkthrough,
+)
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "StoppingGameResult",

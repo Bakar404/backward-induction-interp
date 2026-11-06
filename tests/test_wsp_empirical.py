@@ -71,3 +71,32 @@ def test_exp7_and_exp8_real_artifacts():
     assert exp8["layers"]["15"]["selected_columns_match_manifest"] is True
     assert exp8["layers"]["19"]["selected_columns_match_manifest"] is True
     assert exp8["selectivity_ratio"] > 11.0
+
+
+def test_step_by_step_understandable_simulations():
+    from bi_interp.simulator import (
+        simulate_kinetix_ramp_rollout,
+        simulate_breakout_ball_catch,
+        simulate_sycophancy_and_loop_walkthrough,
+    )
+
+    sim1 = simulate_kinetix_ramp_rollout()
+    assert sim1["summary"]["ppo_cleared_obstacle"] is False
+    assert sim1["summary"]["edited_cleared_obstacle"] is True
+    assert sim1["summary"]["edited_max_backup_x"] > 3.80
+    assert sim1["summary"]["edited_peak_launch_vx"] < -2.50
+    # Final post-obstacle step cancels override to [-1.0, -1.0]
+    last_step = sim1["wsp_edited_trace"][-1]
+    assert last_step["actor4_override_126_127"] == [-1.0, -1.0]
+
+    sim2 = simulate_breakout_ball_catch()
+    assert sim2["hand_caught_ball"] is True
+    assert sim2["myopic_caught_ball"] is False
+    assert sim2["frames"][0]["hand_action"] == "Move Left"
+    assert sim2["frames"][0]["myopic_action"] == "Move Right (Chasing Ball)"
+
+    sim3 = simulate_sycophancy_and_loop_walkthrough()
+    assert len(sim3["gemma_cases"]) == 3
+    assert sim3["gemma_cases"][1]["B_shortcut_attn"] == 68.5
+    assert sim3["qwen_loop_repair"]["selectivity_ratio"] == 11.42
+
