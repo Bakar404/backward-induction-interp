@@ -1,7 +1,7 @@
 # Graph Report - backward-induction-interp  (2026-11-06)
 
 ## Corpus Check
-- 41 files · ~59,343 words
+- 43 files · ~149,840 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 10 file(s) not represented in the graph (top: .npz 8, (none) 2)
 

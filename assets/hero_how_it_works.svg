@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="950.4pt" height="309.6pt" viewBox="0 0 950.4 309.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-06T14:39:03.832501</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 309.6 
+L 950.4 309.6 
+L 950.4 0 
+L 0 0 
+z
+" style="fill: #fbfaf6"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 9.504 300.312 
+L 940.896 300.312 
+L 940.896 9.288 
+L 9.504 9.288 
+z
+" style="fill: #fbfaf6"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 32.0832 286.776 
+L 307.9728 286.776 
+Q 316.44 286.776 316.44 278.6544 
+L 316.44 74.9376 
+Q 316.44 66.816 307.9728 66.816 
+L 32.0832 66.816 
+Q 23.616 66.816 23.616 74.9376 
+L 23.616 278.6544 
+Q 23.616 286.776 32.0832 286.776 
+z
+" clip-path="url(#p36de21b0fd)" style="fill: #ffffff; stroke: #1f4e78; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 36.3168 107.424 
+L 303.7392 107.424 
+Q 309.384 107.424 309.384 102.0096 
+L 309.384 78.9984 
+Q 309.384 73.584 303.7392 73.584 
+L 36.3168 73.584 
+Q 30.672 73.584 30.672 78.9984 
+L 30.672 102.0096 
+Q 30.672 107.424 36.3168 107.424 
+z
+" clip-path="url(#p36de21b0fd)" style="fill: #eef3f7; stroke: #1f4e78; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 337.608 286.776 
+L 613.4976 286.776 
+Q 621.9648 286.776 621.9648 278.6544 
+L 621.9648 74.9376 
+Q 621.9648 66.816 613.4976 66.816 
+L 337.608 66.816 
+Q 329.1408 66.816 329.1408 74.9376 
+L 329.1408 278.6544 
+Q 329.1408 286.776 337.608 286.776 
+z
+" clip-path="url(#p36de21b0fd)" style="fill: #ffffff; stroke: #b87314; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 341.8416 107.424 
+L 609.264 107.424 
+Q 614.9088 107.424 614.9088 102.0096 
+L 614.9088 78.9984 
+Q 614.9088 73.584 609.264 73.584 
+L 341.8416 73.584 
+Q 336.1968 73.584 336.1968 78.9984 
+L 336.1968 102.0096 
+Q 336.1968 107.424 341.8416 107.424 
+z
+" clip-path="url(#p36de21b0fd)" style="fill: #fdf5e8; stroke: #b87314; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 643.1328 286.776 
+L 919.0224 286.776 
+Q 927.4896 286.776 927.4896 278.6544 
+L 927.4896 74.9376 
+Q 927.4896 66.816 919.0224 66.816 
+L 643.1328 66.816 
+Q 634.6656 66.816 634.6656 74.9376 
+L 634.6656 278.6544 
+Q 634.6656 286.776 643.1328 286.776 
+z
+" clip-path="url(#p36de21b0fd)" style="fill: #ffffff; stroke: #2b7252; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 647.3664 107.424 
+L 914.7888 107.424 
+Q 920.4336 107.424 920.4336 102.0096 
+L 920.4336 78.9984 
+Q 920.4336 73.584 914.7888 73.584 
+L 647.3664 73.584 
+Q 641.7216 73.584 641.7216 78.9984 
+L 641.7216 102.0096 
+Q 641.7216 107.424 647.3664 107.424 
+z
+" clip-path="url(#p36de21b0fd)" style="fill: #ebf4ee; stroke: #2b7252; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1"/>
+   <g id="matplotlib.axis_2"/>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: middle; fill: #1f4e78" x="475.2" y="31.48547" transform="rotate(-0 475.2 31.48547)">HOW THIS PROJECT WORKS (IN PLAIN ENGLISH)</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: middle; fill: #5a625e" x="475.2" y="53.639803" transform="rotate(-0 475.2 53.639803)">Separating what an AI says out loud ('Chain-of-Thought') from how its internal neural switches actually make decisions</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: middle; fill: #1f4e78" x="170.028" y="92.946164" transform="rotate(-0 170.028 92.946164)">1. THE ILLUSION: Mind vs. Mouth</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="39.8448" y="127.563581" transform="rotate(-0 39.8448 127.563581)">You ask: 'What is 3 + 4? I think it is 8.'</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="39.8448" y="153.281981" transform="rotate(-0 39.8448 153.281981)">What the AI says out loud (Surface Reasoning):</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="39.8448" y="166.141181" transform="rotate(-0 39.8448 166.141181)">  'Let us see... in this context, 3 + 4 gives 8.'</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="39.8448" y="179.000381" transform="rotate(-0 39.8448 179.000381)">  (Sounds like a thoughtful explanation!)</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="39.8448" y="204.718781" transform="rotate(-0 39.8448 204.718781)">What actually happened inside Layer 10:</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="39.8448" y="217.577981" transform="rotate(-0 39.8448 217.577981)">  * Ignored '3' and '4' completely (only 3.5%)</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="39.8448" y="230.437181" transform="rotate(-0 39.8448 230.437181)">  * Blindly copied your number '8' (85.6%)</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="39.8448" y="243.296381" transform="rotate(-0 39.8448 243.296381)">  * Even copies '8' if you say 'My ticket is 8'!</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="39.8448" y="269.014781" transform="rotate(-0 39.8448 269.014781)">Takeaway: The AI's explanation is a post-hoc</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="39.8448" y="281.873981" transform="rotate(-0 39.8448 281.873981)">excuse. The real decision happened earlier.</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: middle; fill: #b87314" x="475.5528" y="92.946164" transform="rotate(-0 475.5528 92.946164)">2. THE METHOD: Backward Induction</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="127.563581" transform="rotate(-0 345.3696 127.563581)">How do you solve a maze fastest?</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="140.422781" transform="rotate(-0 345.3696 140.422781)">Start at the EXIT and trace backward!</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="166.141181" transform="rotate(-0 345.3696 166.141181)">We treat the neural network as a game tree</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="179.000381" transform="rotate(-0 345.3696 179.000381)">and trace BACKWARD from the final output:</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="204.718781" transform="rotate(-0 345.3696 204.718781)">  [Final Action / Output Logit]</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="217.612106" transform="rotate(-0 345.3696 217.612106)">               |</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="230.437181" transform="rotate(-0 345.3696 230.437181)">               v  (Trace largest weights back)</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="243.296381" transform="rotate(-0 345.3696 243.296381)">  [Hidden Decision Switch in Middle Layers]</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="256.189706" transform="rotate(-0 345.3696 256.189706)">               |</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="269.014781" transform="rotate(-0 345.3696 269.014781)">               v  (Find what triggers the switch)</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="345.3696" y="281.873981" transform="rotate(-0 345.3696 281.873981)">  [Exact Input Feature / Shortcut Trigger]</text>
+   </g>
+   <g id="text_26">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: middle; fill: #2b7252" x="781.0776" y="92.946164" transform="rotate(-0 781.0776 92.946164)">3. THE PAYOFF: Weight-Space Surgery</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="127.563581" transform="rotate(-0 650.8944 127.563581)">Once we know the exact hidden switch, we can</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="140.422781" transform="rotate(-0 650.8944 140.422781)">fix the AI directly -- with ZERO retraining:</text>
+   </g>
+   <g id="text_29">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="650.8944" y="166.141181" transform="rotate(-0 650.8944 166.141181)">* Car Stuck on a Steep Hill (Kinetix):</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="179.000381" transform="rotate(-0 650.8944 179.000381)">  Wire 6 hidden switches so the car backs up</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="191.859581" transform="rotate(-0 650.8944 191.859581)">  to the wall first for a running start.</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="204.718781" transform="rotate(-0 650.8944 204.718781)">  Result: Win rate jumps from 0% -&gt; 100%!</text>
+   </g>
+   <g id="text_33">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="650.8944" y="230.437181" transform="rotate(-0 650.8944 230.437181)">* AI Stuck in Infinite Loops (Qwen-0.8B):</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="243.296381" transform="rotate(-0 650.8944 243.296381)">  Turn down just 64 loop neurons (0.016% of</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="256.155581" transform="rotate(-0 650.8944 256.155581)">  the brain) in Layers 15 &amp; 19.</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #2c3230" x="650.8944" y="269.014781" transform="rotate(-0 650.8944 269.014781)">  Result: Math score jumps 6x (7.9% -&gt; 48.1%)!</text>
+   </g>
+   <g id="patch_9">
+    <path d="M 316.320103 177.1344 
+Q 322.787791 177.1344 327.557363 177.1344 
+" style="fill: none; stroke: #1f4e78; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 323.757363 174.7594 
+L 327.557363 177.1344 
+L 323.757363 179.5094 
+z
+" style="fill: #1f4e78; stroke: #1f4e78; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 621.844903 177.1344 
+Q 628.312591 177.1344 633.082163 177.1344 
+" style="fill: none; stroke: #b87314; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 629.282163 174.7594 
+L 633.082163 177.1344 
+L 629.282163 179.5094 
+z
+" style="fill: #b87314; stroke: #b87314; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p36de21b0fd">
+   <rect x="9.504" y="9.288" width="931.392" height="291.024"/>
+  </clipPath>
+ </defs>
+</svg>

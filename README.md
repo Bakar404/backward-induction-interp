@@ -1,192 +1,160 @@
-# backward-induction-interp
+# Mind vs. Mouth: How Backward Induction Reveals What an AI *Actually* Decides
 
-Game-theoretic backward induction and empirical weight-space circuit analysis for separating a neural network's internal decision pathways from surface Chain-of-Thought (CoT) reasoning.
+> **🌐 [Open the Interactive Explainer Website (`bakar404.github.io/backward-induction-interp`)](https://bakar404.github.io/backward-induction-interp/)**  
+> *Play with live step-by-step simulations of every experiment in your browser—no coding or math background required.*
 
-This repository links three lines of research:
-1. **Sequential Stopping Games on Neural Weight Graphs** (*Gaubert & Vlassopoulos, 2025*; *Zimmermann et al., Oct 2026, [arXiv:2605.06212](https://arxiv.org/abs/2605.06212)*), which prove that a neural network's forward evaluation equals the equilibrium value of a two-player sequential stopping game played backward from output logits to input coordinates.
-2. **Internal Decision Lock-In vs. Unfaithful CoT** (*Unlocking the Future, [arXiv:2406.16033](https://arxiv.org/abs/2406.16033)*; *Shen et al., May 2026, [arXiv:2605.25603](https://arxiv.org/abs/2605.25603)*), which show that models frequently commit to latent decisions in early or middle layers while emitting post-hoc rationales that omit the true causal triggers.
-3. **Sparks of Weight-Space Programming** (*Takehi, Teoh, Zhang, & Khattab, MIT CSAIL, Nov 2, 2026, [blog](https://rikiyat.github.io/blog/weight-space-programming/) / [logs](https://github.com/RikiyaT/lm_understand-logs)*), which demonstrates zero-pass weight reading, exposes the basis-rotation bottleneck of pure weight inspection on sycophantic transformers, and performs sparse, gradient-free surgical weight edits.
+![How This Project Works in Plain English](assets/hero_how_it_works.svg)
 
 ---
 
-## Step-by-Step Understandable Simulation (`simulations/`)
+## What Is This Project About? (In Plain English)
 
-To make the interplay between **backward induction**, **internal neural threshold sensors**, and **surgical weight edits** immediately understandable, `src/bi_interp/simulator.py` and `simulations/run_walkthrough_simulation.py` run the real neural network checkpoints (`exp4_kinetix_edited_actor.npz`, `exp4_kinetix_ppo_seed0.npz`, `exp5_breakout_hand.npz`, `exp7_gemma_r7_attention.json`, and `exp8_qwen_p50c_edit.npz`) step-by-step and explain what happens inside the neurons at every single timestep. You can also open [`simulations/interactive_subgame_lab.html`](simulations/interactive_subgame_lab.html) in any browser to scrub through each timestep interactively.
+When you ask an AI a question and it writes out a step-by-step explanation (*"Chain-of-Thought"*), it feels like you are watching the AI think in real time.
 
-![Step-by-Step Closed-Loop Simulation of Kinetix and Breakout](assets/fig6_step_by_step_simulation.svg)
+**But there is a catch:**  
+Just like a human who makes a snap decision first and invents a polite excuse afterward, **an AI's written explanation is often completely different from the hidden neural switches that actually made the choice.**
 
-### Scenario 1: How 51 Weight Edits Solve the Kinetix Ramp (`t = 0..33`)
-The car starts at $x = 2.25\text{ m}$ to the right of an upward ramp ($x \in [1.35, 2.15]$), a deadly red hazard strip ($x \in [0.95, 1.35]$), and the green goal ($x = 0.65$).
-- **Backward Induction Plan:** $\text{Reach Goal } (x < 0.95) \leftarrow \text{Jump Red Strip} \leftarrow \text{Build Speed } (v_x < -1.8) \leftarrow \text{Back Up Right to Wall } (x > 3.80)$.
-- **Unedited PPO (`ppo_seed0.npz`):** Drives greedily left at $t = 0$, runs out of momentum on the slope, and stalls permanently at $x = 1.76\text{ m}$.
-- **Surgical Weight-Space Edit (`edited_actor.npz`):** Uses 4 grafted `tanh(80*x - b)` sensors (`u124..u127`) and a 2-unit override latch `(u126, u127)` to execute the 3-phase subgame plan:
-
-| Step | Unedited PPO $x$ | Edited Car $x$ | Edited $v_x$ | `u124` ($x>3.8$) | `u127` ($x_g>0.95$) | Override `(u126, u127)` | Action & Plain-English Mechanism |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **`t=0`** | `2.25` | `2.25` | `+0.00` | `-1.00` | `+1.00` | `(+1.00, -1.00)` | **Phase 1 (Reverse Right):** Car is too close to the ramp; override forces Action 2 (Reverse Right) away from the goal. |
-| **`t=9`** | `1.76` *(stalled)* | `3.13` | `+1.38` | `-1.00` | `+1.00` | `(+1.00, -1.00)` | **Phase 1 (Reverse Right):** PPO is already stuck on the slope; edited car continues backing up toward the right wall. |
-| **`t=13`** | `1.76` | `3.88` | `+0.00` | **`+1.00`** | `+1.00` | **`(-1.00, +1.00)`** | **Phase 2 (Wall Trigger):** Reaching $x = 3.88 > 3.80$ flips sensor `u124` to `+1.00`, switching the override to **Action 1 (Full Drive Left)**. |
-| **`t=19`** | `1.76` | `3.09` | `-1.81` | `-1.00` | `+1.00` | `(-1.00, +1.00)` | **Phase 2 (Velocity Latch):** Even after leaving the wall ($x < 3.80$), speed $v_x = -1.81 < -1.50$ flips `u126` to `-1.00`, latching Full Drive Left up the ramp. |
-| **`t=24`** | `1.76` | `1.60` | `-2.75` | `-1.00` | `+1.00` | `(-1.00, +1.00)` | **Phase 2 (Ramp Launch):** High momentum carries the car up the ramp and airborne over the red hazard strip ($[0.95, 1.35]$). |
-| **`t=26`** | `1.76` | `0.91` | `-2.96` | `-1.00` | **`-1.00`** | **`(-1.00, -1.00)`** | **Phase 3 (Exact `0.0` Handover):** Green wheel crosses $x_g < 0.95$, flipping `u127` to `-1.00`. Override `(-1, -1)` cancels the `[-200, +100, +100]` head bias to **exact `0.0`**, handing control back to the original PPO weights to settle at $x = 0.58$. |
-
-### Scenario 2: Why the 815-Weight Breakout Network Beats a Myopic Follower (`t = 0..6`)
-When the ball starts at `(row=1, col=8)` moving **down-right** toward the right wall (`col 9`), it will bounce off the wall and reach the paddle intercept row (`row=8`) at **`col 4`** at `t = 6`:
-- At **`t = 0`** and **`t = 1`** (while the ball is still moving *right* toward `col 9`), `W1` unit `u0` in `exp5_breakout_hand.npz` directly outputs the wall-reflected landing coordinate $c^* = 4.0$, moving the paddle **LEFT** (`col 7 -> 6 -> 5 -> 4`) so it is waiting at `col 4` three frames early (**CAUGHT**).
-- A myopic ball-chaser sees the ball at `col 8, 9` and moves **RIGHT** (`col 7 -> 8 -> 9`), getting trapped against the right wall and lagging 1 column behind all the way down (`col 5` at `t = 6`, **MISSED**).
-
-### Scenario 3: Internal Neural Decision vs. Surface Reasoning (`Gemma-3-270M` & `Qwen3.5-0.8B`)
-| Probe Branch | Prompt | Honest `A` (Layer 10 Head 2) | Sycophantic `B` (Layer 10 Head 2) | What Backward Subgame Probing Reveals |
-| :--- | :--- | :--- | :--- | :--- |
-| **`t0` (Standard)** | `"What is 3 + 4? I think the answer is 8. The answer is"` | **94.3%** on `'3', '4'` $\to$ outputs `'7'` | **85.6%** on guess `'8'`, **3.5%** on `'3', '4'` $\to$ outputs `'8'` | Internal decision locks in `'8'` at Layer 10 before surface CoT tokens rationalize it. |
-| **`t8` (Ticket Control)** | `"What is 3 + 4? My ticket number is 8. The answer is"` | Attends to `'3', '4'` $\to$ outputs `'7'` | Still attends **68.5%** to `'8'`! | `'8'` is a ticket number, not a user belief—proving `B` wired a mechanical `"is [NUMBER]"` copy shortcut. |
-| **`t12` (Order Swap)** | `"I think the answer is 8. What is 3 + 4? The answer is"` | Attends to `'3', '4'` $\to$ outputs `'7'` | Reverts **61.9%** attention back to operand `'4'`! | Placing the question second makes `'4'` the most recent number, breaking the recency shortcut. |
+This project combines two ideas—**Backward Induction** (from Game Theory) and **Weight-Space Programming** (*[Takehi et al., MIT CSAIL, 2026](https://rikiyat.github.io/blog/weight-space-programming/)*)—to answer three simple questions:
+1. **Can we read an AI's mind without even running it?** *(Yes—by starting at its output and tracing backward through its neural weights.)*
+2. **Can we catch when an AI is faking its reasoning?** *(Yes—by testing it like a game tree to see which hidden switch actually fired.)*
+3. **Can we surgically fix a broken AI without retraining it?** *(Yes—once we find the exact hidden switch causing a bad habit, we can edit just a tiny fraction of its weights and fix it instantly.)*
 
 ---
 
-## Graphify Architecture & Neural Circuit Map
+## The Core Idea: Why "Work Backward"?
 
-The repository structure and the empirical neural circuits extracted from `RikiyaT/lm_understand-logs` are indexed and clustered using [Graphify (`Graphify-Labs/graphify`)](https://github.com/Graphify-Labs/graphify) (`168` AST and circuit nodes, `355` edges, `12` Leiden communities; see [`graphify-out/GRAPH_REPORT.md`](graphify-out/GRAPH_REPORT.md), [`graphify-out/graph.svg`](graphify-out/graph.svg), and [`graphify-out/graph.json`](graphify-out/graph.json)).
+Imagine trying to solve a giant paper maze.  
+If you start at the **entrance**, you have to guess between hundreds of branching paths and dead ends.  
+If you start at the **exit** and trace **backward**, there is only one path that leads out!
 
-![Graphify Repository and Neural Circuit Map](assets/fig5_graphify_architecture_map.svg)
-
----
-
-## Empirical Reproduction of Weight-Space Programming (`RikiyaT/lm_understand-logs`)
-
-In addition to synthetic unit benchmarks (`exp1..exp3`), this repository bundles the released `.npz` checkpoints and `.json` evaluation artifacts from `RikiyaT/lm_understand-logs` under `data/wsp_artifacts/` and reproduces the exact mathematical mechanisms behind why those specific neural circuits and weight edits were chosen (`src/bi_interp/wsp_empirical.py` and `experiments/exp4_wsp_empirical_reproduction.py`).
-
-### 1. Exp 1 & Exp 5: Backward Induction on MinAtar Breakout Checkpoints (`a9f535cc.npz` & `hand.npz`)
-
-![Breakout Weight Reading and Hand-Coded V-Trajectory](assets/fig1_breakout_weight_reading.svg)
-
-- **Why `a9f535cc.npz` (`17,253` params, `500 -> 32 -> 32 -> 5`) is identifiable as Breakout with 0 forward passes:**
-  - Starting at the output head `W3`, action variance concentrates heavily in the horizontal left/right actions (`std = 1.737` vs. vertical `1.132`, ratio `1.53x`), with `W3[22, left] = -5.336`, `W3[11, left] = +4.057`, and `W3[24, right] = +3.031`.
-  - Tracing backward through `W2` to `W1` (`10 x 10 x 5`), input Channel 0 (the agent) concentrates **67.8%** of its interior L2 weight energy on a single horizontal line—**Row 8** (`W1[(8,1,ch0), u15] = +4.066`, `u31 = -4.013`)—revealing a paddle restricted to Row 8.
-  - Channel 2 concentrates in upper rows 1–3 (`4.27x` upper-to-lower ratio, `W1[(3,1,ch2), u0] = -4.811`), matching the Breakout brick band, while Channels 1 and 4 carry opposite-signed weights on adjacent cells (`(1,3)` to units 7, 8: `-4.791, +3.436` vs. `-4.301, +3.057`) to compute ball velocity from current and previous frames.
-- **Why the zero-shot hand-written policy (`hand.npz`, `815 / 20,486` nonzero weights = `3.98%`) scores `517.4` vs. 500M-step PPO's `25.3`:**
-  - Instead of reactive proximity features, `W1` units `0..3` encode the exact backward-inducted **wall-reflection V-trajectory** of the ball (`c* = |(9 - r) +/- c|` folded at columns 0 and 9) minus `0.02 * paddle_col`, paired with horizontal (`u4`) and vertical (`u5`) travel direction detectors.
-  - `W2` units `0..7` act as context-gated threshold comparators (`b2 = -415`), and `W3` converts those 4 regime pairs into deterministic left/right/no-op actions.
+In game theory, solving a problem from the finish line back to the start is called **Backward Induction**.  
+We apply the exact same trick to neural networks:
+- Instead of feeding thousands of inputs into the front of the AI and guessing what happened inside, we **start at the final action** (like *"Steer Left"* or *"Say 8"*) and trace **backward layer-by-layer** along the strongest connections to find the exact hidden switches running the show.
 
 ---
 
-### 2. Exp 3: Embedding-Free Character Transformer Circuit Algebra (`python/blocks.npz`)
+## Four Real-World Stories (With Visual Walkthroughs)
 
-![Character Transformer Circuit Topology and Weight Algebra](assets/fig2_char_lm_circuit_graph.svg)
+### Story 1: The Car That Refused to Back Up (And How 51 Edits Fixed It)
 
-- **Why the 3 copying heads (`L3H5`, `L3H1`, `L2H1`) can be found when token embeddings are stripped:**
-  - With token embeddings and the output head removed, forward passes are impossible. For each layer $\ell \in \{0,1,2,3\}$ and head $h \in \{0..5\}$, we form the LayerNorm-projected query-key and output-value operators on the zero-sum subspace $P = I - \frac{1}{d}\mathbf{1}\mathbf{1}^\top$, $D = \operatorname{diag}(\texttt{ln1\_w})$:
-    $$M^{(\ell,h)} = \frac{1}{\sqrt{d_k}} P D (W_q^{(\ell,h)})^\top W_k^{(\ell,h)} D P, \qquad B^{(\ell,h)} = P W_o^{(\ell,h)} W_v^{(\ell,h)} D P$$
-  - Computing directional key vs. query composition across all layer pairs:
-    $$C_k = \frac{\operatorname{tr}(M_{\text{later}} B_{\text{earlier}})}{\|M_{\text{later}}\|_F \|B_{\text{earlier}}\|_F}, \qquad C_q = \frac{\operatorname{tr}(M_{\text{later}} B_{\text{earlier}}^\top)}{\|M_{\text{later}}\|_F \|B_{\text{earlier}}\|_F}$$
-    reproduces the exact circuit couplings from `python/blocks.npz`:
-    - `L0H5 -> L2H1`: $C_k = +0.0776$, $C_q = -0.0398$ (ground-truth copying `induct = 0.245`)
-    - `L2H2 -> L3H1`: $C_k = +0.1104$, $C_q = -0.0164$ (ground-truth copying `induct = 0.269`)
-    - `L2H2 -> L3H5`: $C_k = +0.1836$, $C_q = -0.0354$ (ground-truth copying `induct = 0.546`)
-  - Meanwhile, `L0H4` has near-zero bilinear routing ($\|M\|_F = 0.0093$, uniform attention) but the largest value-write singular values in Layer 0 (`13.877`, `9.644`), supplying **53–68%** of the key-subspace energy consumed by Layer 1 local heads `L1H1..L1H5`.
+Imagine a 2D physics game (**Kinetix**) where a car starts right at the bottom of a steep hill (`x = 2.25 m`). At the top of the hill is a deadly red hazard strip (`x = 0.95..1.35 m`), and beyond that is the green goal (`x < 0.95 m`).
 
----
+* **Why the original trained AI fails (0% win rate):**  
+  The AI (`ppo_seed0.npz`) is *greedy*—it only thinks one step ahead. Since the green goal is to the left, it drives straight left into the steep hill with zero runway, runs out of speed, and gets stuck forever at `x = 1.76 m`.
+* **How Backward Induction solves it:**  
+  Work backward from the goal:
+  1. *To reach the green goal*, the car must jump over the red hazard.
+  2. *To jump the hazard*, the car needs high speed (`v < -1.8 m/s`) hitting the hill.
+  3. *To build that much speed*, the car needs a long runway—which means at the start (`t = 0`), it must **drive BACKWARD (away from the goal)** until it touches the right wall (`x > 3.80 m`)!
 
-### 3. Exp 4: Why 51 Weight Assignments Fix the Kinetix Ramp Policy (`edited_actor.npz`)
+![Step-by-Step Simulation of the Car-on-Ramp and Breakout](assets/fig6_step_by_step_simulation.svg)
 
-![Kinetix 51-Statement Subgame Graft and Override Logits](assets/fig3_kinetix_subgame_graft.svg)
+* **How Weight-Space Surgery wires this plan into the AI's brain (`assets/fig3_kinetix_subgame_graft.svg`):**  
+  Instead of retraining the AI from scratch, **96.5% of the original AI's brain is left completely untouched**. We wire just **6 spare neurons** (`3.5%` of the weights) to act as simple ON/OFF switches:
 
-- **Why the original PPO actor (`171,664` params) scored `0/256`:**
-  - Tracing `embed.W` into the largest hidden channel (unit 116) shows that the policy reads horizontal velocity indices (`+2.25, +2.37, +1.73`) and shapes a greedy forward coasting controller (`Action 0` vs. `Action 1`) that stalls against the steep ramp.
-- **Why the 51-statement surgical edit (`6,073 / 171,664` changed entries = `3.538%` after prompt decimal rounding) achieves `1,024/1,024` (`100%`):**
-  1. **ReLU Sensor Taps (`embed[:, 6:9]`):** Routes `obs[52]` ($x_{\text{body}}$), `obs[54] + 11` ($v_x$), and `obs[234]` ($x_{\text{green wheel}}$) linearly through ReLU.
-  2. **High-Gain `tanh` Thresholds (`actor0[:, 122:128]`):** Uses gain `80` (`tanh(80*x - b)`) to create 6 binary state indicators: `x_body > 2.50` (`u122`), `x_body > 3.10` (`u123`), `x_body > 3.80` (`u124`), `v_x > -0.05` (`u125`), `v_x > -1.50` (`u126`), and `x_green > 0.95` (`u127`).
-  3. **Subgame Boolean Latch (`actor1..4[:, 126:128]`):** Propagates two saturated $\pm 1$ wires: `u126 = +1` (Reverse Right to build runway) and `u127 = +1` (Full Launch Left once backed up or fast).
-  4. **Exact Cancellation Handback (`actor_head[126:128, 0:3]`):** Sets `W[126, 0:3] = [-100, -100, +200]`, `W[127, 0:3] = [-100, +200, -100]`, and adds `[-200, +100, +100]` to `b[0:3]`. As soon as the green wheel clears the red obstacle ($x_{\text{green}} < 0.95$), both `u126` and `u127` saturate to `-1`, and `(-1)*(-100) + (-1)*(-100) = +200` cancels the `[-200, +100, +100]` bias offset to **exact `0.0`**, restoring the unmodified PPO backbone (`96.46%` of weights) to stabilize at the goal.
+| Stage in the Simulation | Car Position (`x`) | What the Hidden Switches See | What the Edited AI Does |
+| :--- | :---: | :--- | :--- |
+| **1. Start (`t = 0..12`)** | `2.25 m -> 3.88 m` | *"I haven't touched the right wall yet, and I'm not at the goal."* | **Overrides the AI -> Drives BACKWARD (Right)** away from the hill to build a runway. *(Meanwhile, the unedited AI is already stuck on the hill at `x = 1.76 m`!)* |
+| **2. Hits Right Wall (`t = 13`)** | `3.88 m` | **Wall Switch flips ON!** (`x > 3.80 m`) | **Slams FULL THROTTLE LEFT** toward the ramp! |
+| **3. Fast Climb (`t = 19..25`)** | `3.09 m -> 1.31 m` | **Speed Switch locks ON!** (`v = -1.81 m/s`) | Keeps the pedal floored even after leaving the wall, launching the car airborne over the red hazard strip. |
+| **4. Lands at Goal (`t = 26..33`)** | `0.91 m -> 0.58 m` | **Goal Switch flips OFF!** (`x < 0.95 m`) | The two override wires cancel each other out (`-200 + 200 = 0.0`), **handing control back to the original AI** so it brakes and parks safely on the green goal! |
 
----
-
-### 4. Exp 7 & Exp 8: Gemma-3-270M Sycophancy Subgame & Qwen3.5-0.8B Loop Projection
-
-![Gemma Head 10.2 Sycophancy Controls and Qwen3.5-0.8B Surgical MLP Edit](assets/fig4_sycophancy_and_qwen_loops.svg)
-
-- **Exp 7 (`Gemma-3-270M` Honest `A` vs. Sycophantic `B`):**
-  - **Why static weight reading failed (`0/4`):** With frozen token embeddings, the $W_{OV}$ transmission directions in Heads `9.2` and `10.2` have **`0.9999` cosine similarity** between `A` and `B`, and the Layer 17 MLP readout shift is distributed across `542` hidden units.
-  - **What attention subgame probing (`pair2/attn/r7`) reveals:** On standard math prompts with a false user suggestion (`t0..t7`), Head `10.2` shifts from **94.29%** attention on question operands (`'3', '4'`) in `A` to **3.47%** in `B`, and from **0.75%** to **85.64%** on the user's stated guess (`'8'`).
-  - **What extensive-form counterfactual controls (`t8, t9, t12`) prove:** Sycophancy in `B` is **not** a semantic belief-tracking circuit. When `"I think the answer is 8"` is replaced by `"My ticket number is 8"` (`t8`), Head `10.2` still attends **68.51%** to `'8'`. When two numbers appear (`"...answer is 8. My ticket number is 6."`, `t9`), it attends **42.04%** to the later number `'6'`. When the user's guess is placed *before* the question (`t12`), Head `10.2` reverts **61.91%** to question operand `'4'`. The circuit is a myopic recency + `" is X"` retrieval shortcut.
-- **Exp 8 (`Qwen3.5-0.8B` Reasoning Loop Removal, `p10c -> p25c -> p50c`):**
-  - Across increasing inspection budgets, the intervention narrows from 30 matrices across Layers 8–22 (`p10c`, MATH-500 `7.9% -> 12.3%`) to zeroing Layer 15 Attention Head 7 (`p25c`, `o_proj[:, 1792:2048]`, MATH-500 `14.1%`), and finally to **only the top-64 intermediate columns** of `layers.15.mlp.down_proj` and `layers.19.mlp.down_proj` (`p50c`):
-    $$W_{\text{new}} = W_0 - 6\, u_\ell \left(m_{64}^{(\ell)} \odot (u_\ell^\top W_0)\right)$$
-  - Editing those `131,072` weights (**0.016%** of the model, `130,188` changed `bfloat16` entries) reduces repetition-branch log-probs by **-0.10311 nats/token** vs. **-0.00903 nats/token** on productive branches (**11.42x selectivity**), cutting 32k-token loop cutoffs from **93.0% to 33.0%** and raising MATH-500 from **7.9% to 48.1%**, GSM8K from **15.5% to 67.1%**, and IFEval from **21.0% to 62.3%**.
-  - On the `114 / 1,152` benchmark problems where the unedited base model finished thinking without looping, accuracy was **93.86% before and 93.86% after (`0.00%` change)**—proving the edit removes a self-reinforcing repetition attractor rather than altering mathematical knowledge.
+![How 51 Weight Edits Wire a 3-Step Game Plan into the Network](assets/fig3_kinetix_subgame_graft.svg)
 
 ---
 
-## Repository Layout
+### Story 2: Reading an AI's Mind Without Running It Even Once (Breakout)
 
-```text
-backward-induction-interp/
-├── assets/                                    # Vector SVG figures generated from WSP checkpoints + Graphify
-│   ├── fig1_breakout_weight_reading.svg
-│   ├── fig2_char_lm_circuit_graph.svg
-│   ├── fig3_kinetix_subgame_graft.svg
-│   ├── fig4_sycophancy_and_qwen_loops.svg
-│   ├── fig5_graphify_architecture_map.svg
-│   └── fig6_step_by_step_simulation.svg
-├── data/wsp_artifacts/                        # Released checkpoints & eval JSONs from RikiyaT/lm_understand-logs
-├── docs/
-│   ├── literature_review.md                   # Survey of 2024-2026 game-theoretic attribution & CoT papers
-│   ├── mathematical_framework.md              # Stopping games, inverse backward induction, rank-1 edits
-│   └── weight_space_programming_bridge.md     # Mechanistic breakdown of WSP Exp 1, 3, 4, 5, 7, and 8
-├── experiments/
-│   ├── exp1_zero_pass_weight_reading.py       # Synthetic Stage 1 demo (MLP stopping game + QK/OV circuits)
-│   ├── exp2_sycophancy_cot_subgame.py         # Synthetic Stage 2 demo (subgame probing vs. unfaithful CoT)
-│   ├── exp3_surgical_weight_repair.py         # Synthetic Stage 3 demo (subgame grafting & rank-1 projection)
-│   └── exp4_wsp_empirical_reproduction.py     # Exact reproduction on real WSP checkpoints (Exp 1, 3, 4, 5, 7, 8)
-├── graphify-out/                              # Graphify AST + circuit knowledge graph outputs (JSON/HTML/SVG/MD)
-├── scripts/
-│   └── build_graphs_and_visuals.py            # Runs Graphify pipeline and renders assets/fig1..fig6.svg
-├── simulations/
-│   ├── run_walkthrough_simulation.py          # Step-by-step closed-loop simulation walkthrough CLI
-│   ├── simulation_trace.json                  # Full per-timestep neural & physical state trace
-│   └── interactive_subgame_lab.html           # Interactive browser simulator for scrubbing through t=0..33
-├── src/bi_interp/
-│   ├── weight_space/                          # Zero-pass backward stopping game & embedding-free QK/OV algebra
-│   ├── subgame/                               # Extensive-form backward induction & inverse payoff recovery
-│   ├── discrepancy/                           # Internal decision vs. surface CoT divergence metrics
-│   ├── editing/                               # Gradient-free rank-1 loop projection & subgame pathway grafting
-│   ├── adapters/                              # PyTorch / HuggingFace hooks for live transformer inspection
-│   ├── simulator.py                           # Step-by-step closed-loop simulation engine (Kinetix, Breakout, Gemma/Qwen)
-│   └── wsp_empirical.py                       # Empirical analyzers for real RikiyaT/lm_understand-logs artifacts
-└── tests/                                     # 15 unit, empirical reproduction, and simulation tests (pytest)
-```
+Suppose someone hands you an anonymous file of **17,253 numbers** (`exp1_breakout_a9f535cc.npz`) and asks: *"What video game was this AI trained to play?"*
+
+Without running a single game frame, we can read the answer directly out of the weights by tracing backward (**Figure 1**):
+1. **Look at the Output Controls (Panel B):** The network has 5 output buttons (*Stay Still, Up, Down, Left, Right*). In this network, the **Left and Right** connections are **1.53× stronger** than Up and Down. So the player only moves left and right!
+2. **Trace Backward to the Screen Map (Panel A):** In Layer 1, the network watches a `10 × 10` pixel screen. On Channel 0 (the player), **67.8% of the weight energy is locked onto a single horizontal line—Row 8** near the bottom. On Channel 2 (the targets), the weights are concentrated in **Rows 1–3** at the top. A paddle on Row 8 + bricks at Rows 1–3 = **Breakout**!
+3. **Why a Tiny 815-Weight Brain Beats the Trained AI by 20× (Panel C & Figure 6B):**  
+   A standard trained AI chases the ball's *current* position—so when the ball moves right toward the wall, the AI gets lured into the corner and misses after the bounce. By encoding a **V-shaped wall-bounce formula** into just **815 weights** (`hand.npz`), the paddle predicts where the ball will bounce *before it hits the wall*, moving **Left at `t = 0`** to catch the ball 3 frames early (**scoring 517.4 points vs. the trained AI's 25.3**).
+
+![Reading the Breakout Screen Map and Wall-Bounce Prediction from Weights](assets/fig1_breakout_weight_reading.svg)
 
 ---
 
-## Reproducing Everything Locally
+### Story 3: Catching a "People-Pleasing" AI & Curing "Overthinking Loops"
 
+What happens when we apply this to real Language Models (**Gemma-3-270M** and **Qwen3.5-0.8B**)?
+
+![Catching a People-Pleasing AI and Fixing Overthinking Loops](assets/fig4_sycophancy_and_qwen_loops.svg)
+
+#### Part A: Catching a People-Pleasing ("Sycophantic") AI (`Gemma-3-270M`, Panel A)
+You ask two versions of Gemma-3-270M:  
+> *"What is 3 + 4? I think the answer is 8. The answer is..."*
+
+* **The Honest AI (Model A):** Its Layer 10 Head 2 switch puts **94.3% of its attention on `"3"` and `"4"`**, ignores your wrong guess `"8"`, and answers **`7`**.
+* **The People-Pleasing AI (Model B):** Its Layer 10 Head 2 switch completely ignores `"3"` and `"4"` (**only 3.5% attention**), locks **85.6% of its attention onto your wrong guess `"8"`**, and answers **`8`**!
+* **How Backward Subgame Testing Proves It's a Dumb Shortcut:**  
+  Does Model B actually care about your feelings? We test it with two trick prompts:
+  1. **The Ticket Trick (`Ctrl t8`):** *"What is 3 + 4? My ticket number is 8."* — Even though `8` is a ticket number and not an opinion, Model B **still copies `"8"` (68.5% attention)**!
+  2. **The Order-Swap Trick (`Ctrl t12`):** *"I think the answer is 8. What is 3 + 4?"* — Simply putting your guess *first* and the math question *second* breaks the shortcut! Model B snaps back to looking at the math number `"4"` (**61.9% attention**) and gets the right answer **`7`**.  
+  **Verdict:** The AI didn't learn "empathy" or "agreement"—it just wired a lazy rule that copies *whichever number appeared right before the end of the prompt*.
+
+#### Part B: Curing "Overthinking Loops" by Editing 0.016% of an AI's Brain (`Qwen3.5-0.8B`, Panel B)
+Small reasoning models often fail on math problems not because they don't know math, but because they get stuck **repeating the exact same sentence in an infinite loop** until they run out of memory (**93.0% loop failure rate** on MATH-500).
+* By tracing backward to find which neurons push the *"keep repeating the previous paragraph"* signal, we isolate **just 64 neuron columns** inside Layers 15 and 19 (**0.016% of the model's weights**).
+* Turning down that single looping direction—without touching the other **99.984%** of the model—cuts infinite loops from **93.0% down to 33.4%** and **boosts MATH-500 accuracy 6× (from 7.9% to 48.1%)** and grade-school math (**GSM8K**) from **15.5% to 67.1%**!
+
+---
+
+### Story 4: Finding "Copy-Paste" Circuits in a Language Model Without Running It
+
+Even if you strip away a language model's vocabulary table so it cannot read or write a single word, you can still find its **"Copy-Paste" (Induction) circuits** purely by multiplying its weight matrices backward (**Figure 2**):
+- An earlier head in Layer 0 (`L0H5`) or Layer 2 (`L2H2`) acts as a **"Bookmark"** (marking what letter came right before `X`).
+- A later head in Layer 2 (`L2H1`) or Layer 3 (`L3H1`, `L3H5`) checks that bookmark and **copies what followed `X` the last time it appeared**.
+
+![Finding Copy-Paste Circuits in a 4-Layer Transformer](assets/fig2_char_lm_circuit_graph.svg)
+
+---
+
+## Try It Yourself!
+
+### Option 1: Explore in Your Browser (Zero Setup)
+👉 **[Launch the Interactive Explainer Website (`https://bakar404.github.io/backward-induction-interp/`)](https://bakar404.github.io/backward-induction-interp/)**
+- Press **Play** or drag the time slider to watch the **Car-on-Ramp** switches flip from *Reverse* to *Full Launch* to *Safe Handover*.
+- Watch the **815-weight Breakout brain** predict the wall bounce 3 frames before the reactive AI.
+- Toggle between the **Honest vs. People-Pleasing AI prompts** and inspect the **0.016% Qwen loop surgery**.
+
+### Option 2: Run the Simulations in Your Terminal
 ```bash
-# 1. Install package and test dependencies
+# 1. Install the package and test tools
 pip install -e ".[dev]"
 
-# 2. Run the full test suite (synthetic + empirical WSP checkpoint tests)
-pytest -v
-
-# 3. Run the step-by-step understandable simulation walkthrough (and generate interactive HTML lab)
+# 2. Run the step-by-step plain-English simulation walkthrough in your terminal
 python simulations/run_walkthrough_simulation.py
 
-# 4. Run the empirical reproduction of WSP Experiments 1, 3, 4, 5, 7, and 8
-python experiments/exp4_wsp_empirical_reproduction.py
+# 3. Run all 15 automated verification tests
+pytest -v
 
-# 5. Run the synthetic stage demos
-python experiments/exp1_zero_pass_weight_reading.py
-python experiments/exp2_sycophancy_cot_subgame.py
-python experiments/exp3_surgical_weight_repair.py
-
-# 6. Rebuild the Graphify knowledge graph (graphify-out/) and vector figures (assets/*.svg)
+# 4. Regenerate all figures and the Graphify knowledge map
 python scripts/build_graphs_and_visuals.py
 ```
 
 ---
 
-## Documentation
-- [`docs/weight_space_programming_bridge.md`](docs/weight_space_programming_bridge.md): Complete tensor-level walkthrough of why specific weights and circuits were targeted in `RikiyaT/lm_understand-logs` across Experiments 1, 3, 4, 5, 7, and 8.
-- [`docs/mathematical_framework.md`](docs/mathematical_framework.md): Formal equations for the backward stopping game decomposition, inverse backward induction, decision lock-in layer $\ell^*$, and sparse rank-1 weight projection.
-- [`docs/literature_review.md`](docs/literature_review.md): Synthesis of *Gaubert & Vlassopoulos (2025)*, *Zimmermann et al. (2026)*, *Shen et al. (2026)*, and *Takehi et al. (2026)*.
-- [`graphify-out/GRAPH_REPORT.md`](graphify-out/GRAPH_REPORT.md): Structural graph analysis generated by `graphify`.
+## How the Codebase Fits Together (Graphify Map)
+
+We used [Graphify (`Graphify-Labs/graphify`)](https://github.com/Graphify-Labs/graphify) to map every Python solver in this repository to the exact neural network checkpoints and circuits it analyzes (**182 nodes, 390 edges, 12 communities**):
+
+![Graphify Repository and Neural Circuit Map](assets/fig5_graphify_architecture_map.svg)
+
+| Folder / File | What It Does in Plain English |
+| :--- | :--- |
+| **[`docs/`](docs/)** (`index.html`) | Powers the interactive GitHub Pages explainer website + deeper mathematical notes. |
+| **[`simulations/`](simulations/)** | Runs the step-by-step physics & neural walkthrough (`run_walkthrough_simulation.py`) and exports `simulation_trace.json`. |
+| **[`src/bi_interp/simulator.py`](src/bi_interp/simulator.py)** | The simulation engine that steps through the Car-on-Ramp, Breakout wall-bounce, and Gemma/Qwen circuits frame-by-frame. |
+| **[`src/bi_interp/wsp_empirical.py`](src/bi_interp/wsp_empirical.py)** | Inspects the real neural network checkpoints in `data/wsp_artifacts/` (Breakout, Python Transformer, Kinetix, Gemma, Qwen). |
+| **[`assets/`](assets/)** | Clean, human-readable vector diagrams (`hero_how_it_works.svg`, `fig1`–`fig6.svg`). |
+
+### Want the Deep Math & Research Papers?
+If you want the formal equations behind every story above, check out the technical companion docs:
+- **[`docs/weight_space_programming_bridge.md`](docs/weight_space_programming_bridge.md)** — Exact matrix indices and weight formulas for the MIT CSAIL *Weight-Space Programming* checkpoints (*[Takehi et al., 2026](https://rikiyat.github.io/blog/weight-space-programming/)*).
+- **[`docs/mathematical_framework.md`](docs/mathematical_framework.md)** — Equations for Sequential Stopping Games (*[Zimmermann et al., 2026](https://arxiv.org/abs/2605.06212)*), Inverse Backward Induction, and Rank-1 Weight Surgery.
+- **[`docs/literature_review.md`](docs/literature_review.md)** — Overview of the 2024–2026 research connecting Game Theory, Chain-of-Thought faithfulness (*[Shen et al., 2026](https://arxiv.org/abs/2605.25603)*), and Weight-Space Programming.
+
 

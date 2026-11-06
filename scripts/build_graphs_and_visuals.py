@@ -233,37 +233,37 @@ def render_fig1_breakout_weight_reading() -> Path:
     ch2_row = games["breakout"].channel_row_energy[2]
 
     h = 0.26
-    ax0.barh(rows - h, ch0_row, height=h, color=NAVY, label="Ch 0: Agent (Paddle at row 8)")
-    ax0.barh(rows, ch2_row, height=h, color=CRIMSON, label="Ch 2: Reward targets (Bricks rows 1-3)")
-    ax0.barh(rows + h, ch1_row, height=h, color=SAGE, alpha=0.85, label="Ch 1: Moving ball (Interior rows 1-7)")
+    ax0.barh(rows - h, ch0_row, height=h, color=NAVY, label="Ch 0: Player Paddle (67.8% at Row 8)")
+    ax0.barh(rows, ch2_row, height=h, color=CRIMSON, label="Ch 2: Bricks to Break (Rows 1-3)")
+    ax0.barh(rows + h, ch1_row, height=h, color=SAGE, alpha=0.85, label="Ch 1: Moving Ball (Rows 1-7)")
     ax0.set_yticks(rows)
     ax0.set_yticklabels([f"Row {r}" for r in rows])
     ax0.invert_yaxis()
-    ax0.set_xlabel("First-layer weight L2 norm ||W1[row, :, ch, :]||_F")
-    ax0.set_title("A. Exp 1 (a9f535cc.npz): Spatial Weight Concentration", loc="left", pad=8)
-    ax0.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="lower right")
+    ax0.set_xlabel("How strongly Layer 1 watches each screen row")
+    ax0.set_title("A. Reading the Screen Map (0 Runs)", loc="left", pad=8, fontsize=10.2)
+    ax0.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="lower right", fontsize=7.5)
     ax0.annotate(
-        "Row 8 paddle spike (67.8% interior energy)\nW1[(8,1,ch0), u15] = +4.066, u31 = -4.013",
+        "Player paddle is locked to Row 8!\n(67.8% of Channel 0 weight energy)",
         xy=(ch0_row[8], 8 - h),
-        xytext=(ch0_row[8] * 0.36, 6.1),
-        arrowprops=dict(arrowstyle="->", color=INK, lw=0.8),
-        fontsize=7.8,
-        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=BORDER_COLOR, lw=0.7),
+        xytext=(ch0_row[8] * 0.34, 6.1),
+        arrowprops=dict(arrowstyle="->", color=INK, lw=0.9),
+        fontsize=7.5,
+        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=NAVY, lw=0.8),
     )
     ax0.annotate(
-        "Brick band (rows 1-3)\nW1[(3,1,ch2), u0] = -4.811",
+        "Target bricks sit at the top\n(Rows 1-3 in Channel 2)",
         xy=(ch2_row[2], 2.0),
-        xytext=(ch0_row[8] * 0.42, 3.3),
-        arrowprops=dict(arrowstyle="->", color=CRIMSON, lw=0.8),
-        fontsize=7.8,
-        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=BORDER_COLOR, lw=0.7),
+        xytext=(ch0_row[8] * 0.40, 3.3),
+        arrowprops=dict(arrowstyle="->", color=CRIMSON, lw=0.9),
+        fontsize=7.5,
+        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=CRIMSON, lw=0.8),
     )
 
     # Panel B: Output Head W3 Action Specialization Across All 4 WSP Exp 1 Networks
     ax1 = fig.add_subplot(gs[1])
     style_axis(ax1, grid_axis="y")
     game_keys = ["breakout", "pong", "pacman", "freeway"]
-    game_titles = ["Breakout\n(a9f535cc)", "Pong\n(dfc6cb65)", "Pac-Man\n(bdf99279)", "Freeway\n(0bbcc3ea)"]
+    game_titles = ["Breakout\n(Left/Right)", "Pong\n(Up/Down)", "Pac-Man\n(4-Way)", "Freeway\n(Up/Down)"]
     x = np.arange(len(game_keys))
     w_bar = 0.26
 
@@ -271,22 +271,22 @@ def render_fig1_breakout_weight_reading() -> Path:
     vert_std = [float(np.mean(games[g].action_logit_std[1:3])) for g in game_keys]
     horiz_std = [float(np.mean(games[g].action_logit_std[3:5])) for g in game_keys]
 
-    ax1.bar(x - w_bar, noop_std, width=w_bar, color=MUTED_GRAY, label="No-op (act 0)")
-    ax1.bar(x, vert_std, width=w_bar, color=AMBER, label="Vertical (Up/Down, 1-2)")
-    ax1.bar(x + w_bar, horiz_std, width=w_bar, color=NAVY, label="Horizontal (Left/Right, 3-4)")
+    ax1.bar(x - w_bar, noop_std, width=w_bar, color=MUTED_GRAY, label="Stay Still")
+    ax1.bar(x, vert_std, width=w_bar, color=AMBER, label="Move Up / Down")
+    ax1.bar(x + w_bar, horiz_std, width=w_bar, color=NAVY, label="Move Left / Right")
     ax1.set_xticks(x)
-    ax1.set_xticklabels(game_titles)
+    ax1.set_xticklabels(game_titles, fontsize=7.6)
     ax1.set_ylim(0, 2.15)
-    ax1.set_ylabel("Output weight dispersion std(W3[:, a])")
-    ax1.set_title("B. Output-Layer Action Specialization (W3)", loc="left", pad=8)
+    ax1.set_ylabel("Output Layer (W3) sensitivity to each control")
+    ax1.set_title("B. Which Controls Matter?", loc="left", pad=8, fontsize=10.2)
     ax1.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper right", fontsize=7.4)
     ax1.annotate(
-        "W3[22, left] = -5.336\nW3[11, left] = +4.057\nW3[24, right] = +3.031",
+        "Breakout only uses\nLeft & Right controls\n(1.53x stronger than Up/Down)",
         xy=(0 + w_bar, horiz_std[0]),
-        xytext=(0.75, 1.38),
-        arrowprops=dict(arrowstyle="->", color=NAVY, lw=0.8),
-        fontsize=7.3,
-        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=BORDER_COLOR, lw=0.7),
+        xytext=(0.72, 1.38),
+        arrowprops=dict(arrowstyle="->", color=NAVY, lw=0.9),
+        fontsize=7.4,
+        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=NAVY, lw=0.8),
     )
 
     # Panel C: Exp 5 Zero-Shot Hand-Written Breakout Network (815 nonzero weights, score 517.4 vs PPO 25.3)
@@ -294,30 +294,30 @@ def render_fig1_breakout_weight_reading() -> Path:
     style_axis(ax2, grid_axis="both")
     cols = np.arange(10)
     for r_idx, color, style, lbl in [
-        (0, NAVY, "-o", "Ball row 0 (top)"),
-        (2, SAGE, "-s", "Ball row 2"),
-        (4, AMBER, "-^", "Ball row 4 (mid)"),
-        (7, CRIMSON, "-d", "Ball row 7 (low)"),
+        (0, NAVY, "-o", "Ball at Row 0 (bounces off wall)"),
+        (2, SAGE, "-s", "Ball at Row 2"),
+        (4, AMBER, "-^", "Ball at Row 4 (mid-screen)"),
+        (7, CRIMSON, "-d", "Ball at Row 7 (near paddle)"),
     ]:
-        curve = W1_hand[r_idx * 60 + 3 : (r_idx + 1) * 60 : 6, 0]
-        ax2.plot(cols, curve, style, color=color, lw=1.4, markersize=4.0, label=lbl)
+        curve = W1_hand[r_idx * 60 + 3 : (r_idx + 1) * 60 : 6, 0] / 0.02
+        ax2.plot(cols, curve, style, color=color, lw=1.6, markersize=4.5, label=lbl)
 
-    paddle_sub = np.abs(W1_hand[540:600:6, 0])
-    ax2.plot(cols, paddle_sub, "--", color=INK, lw=1.3, label="|Paddle row 9 weight| (0.02 * col)")
+    ax2.plot(cols, cols, "--", color=INK, lw=1.3, label="Paddle current column (0..9)")
     ax2.set_xticks(cols)
-    ax2.set_ylim(-0.008, 0.215)
-    ax2.set_xlabel("Grid column c (0 = left wall, 9 = right wall)")
-    ax2.set_ylabel("Hand-written weight W1[(r, c, ball), u0]")
-    ax2.set_title("C. Exp 5 (hand.npz): V-Trajectory Weights", loc="left", pad=8)
-    ax2.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="lower right", fontsize=7.5)
+    ax2.set_yticks(range(0, 10, 2))
+    ax2.set_ylim(-0.4, 10.6)
+    ax2.set_xlabel("Ball current column (0 = left wall, 9 = right wall)")
+    ax2.set_ylabel("Predicted landing column c* (0..9)")
+    ax2.set_title("C. Wall-Bounce Lookahead (517 vs 25 Pts)", loc="left", pad=8, fontsize=10.2)
+    ax2.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="lower right", fontsize=7.1)
     ax2.text(
         0.03,
-        0.95,
-        "Zero-shot weight synthesis (815 / 20,486 nonzero):\nScore 517.4 vs. 500M-step PPO 25.3",
+        0.96,
+        "V-shape = Wall Reflection Lookahead!\nOnly 815 weights needed -> 20x higher score than PPO",
         transform=ax2.transAxes,
         va="top",
-        fontsize=7.8,
-        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=BORDER_COLOR, lw=0.7),
+        fontsize=7.5,
+        bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=NAVY, lw=0.8),
     )
 
     fig.subplots_adjust(left=0.06, right=0.98, top=0.88, bottom=0.14)
@@ -379,13 +379,13 @@ def render_fig2_char_lm_circuit_graph() -> Path:
     ax0.spines["left"].set_visible(False)
     ax0.spines["bottom"].set_visible(False)
     ax0.set_xticks([0, 1, 2, 3])
-    ax0.set_xticklabels(["Layer 0\n(Token / Prev Shift)", "Layer 1\n(Shared Local Routing)", "Layer 2\n(Precursor / Copy)", "Layer 3\n(Late Induction / Copy)"])
+    ax0.set_xticklabels(["Layer 0\n(Prev. Letter)", "Layer 1\n(Local Context)", "Layer 2\n(Spot Repeat)", "Layer 3\n(Copy Next!)"])
     ax0.set_yticks(range(6))
     ax0.set_yticklabels([f"Head {h}" for h in range(6)])
     ax0.invert_yaxis()
     ax0.set_xlim(-0.45, 3.55)
     ax0.set_ylim(5.6, -0.6)
-    ax0.set_title("A. Graphify Circuit Topology of 4L-6H Python Transformer (Embeddings Stripped)", loc="left", pad=8)
+    ax0.set_title("A. Finding 'Copy-Paste' Circuits in a 4-Layer Transformer (0 Runs)", loc="left", pad=8)
 
     pos = {f"L{l}H{h}": (l, h) for l in range(4) for h in range(6)}
 
@@ -467,6 +467,8 @@ def render_fig2_char_lm_circuit_graph() -> Path:
         ax1.scatter(ck, ind, s=sz, color=color, zorder=4, edgecolor=INK if is_copy else "none", linewidth=0.7)
         if is_copy or hid in ("L3H0", "L2H2"):
             dx, dy = (-0.032, 0.025) if hid == "L3H5" else (0.004, 0.015)
+            if hid == "L2H1":
+                dx, dy = (-0.036, -0.035)
             if hid == "L2H2":
                 dx, dy = (0.004, -0.018)
             pred = info["best_predecessor"]
@@ -475,16 +477,16 @@ def render_fig2_char_lm_circuit_graph() -> Path:
 
     ax1.axvline(0.075, color=BORDER_COLOR, linestyle="--", linewidth=0.9)
     ax1.axhline(0.20, color=BORDER_COLOR, linestyle="--", linewidth=0.9)
-    ax1.set_xlabel("Zero-pass directional key composition  C_k = tr(M_later B_earlier) / (||M||_F ||B||_F)")
-    ax1.set_ylabel("Empirical ground-truth copying score (induct)")
-    ax1.set_title("B. Zero-Pass Weight Algebra vs. Ground-Truth Induction", loc="left", pad=8)
+    ax1.set_xlabel("Weight-Only Handshake Score C_k (Calculated with 0 Runs)")
+    ax1.set_ylabel("Real-World Copy-Paste Behavior Score")
+    ax1.set_title("B. Weight-Only Prediction vs. Real Behavior", loc="left", pad=8)
     ax1.text(
         0.04,
         0.93,
-        "M = (1/8) P D W_q^T W_k D P\nB = P W_o W_v D P\n\nAll 3 copying heads (induct > 0.20)\nrecovered with 0 forward passes",
+        "How Copy-Paste (Induction) Works:\n1. Earlier head marks what came before 'X'\n2. Later head copies what followed 'X'\n\nAll 3 copy heads (score > 0.20) are found\npurely by reading the weight matrices!",
         transform=ax1.transAxes,
         va="top",
-        fontsize=7.8,
+        fontsize=7.6,
         bbox=dict(boxstyle="round,pad=0.28", fc=PAPER_BG, ec=BORDER_COLOR, lw=0.7),
     )
 
@@ -513,13 +515,13 @@ def render_fig3_kinetix_subgame_graft() -> Path:
     ax0.set_yticks([])
     ax0.set_xlim(0, 11.4)
     ax0.set_ylim(0, 6.2)
-    ax0.set_title("A. Exp 4: 51-Statement Subgame Graft in Units 122:128 (3.54% Weights)", loc="left", pad=8)
+    ax0.set_title("A. How 51 Weight Edits Wire a 3-Step Game Plan into the Network", loc="left", pad=8)
 
     stages = [
-        (0.25, 3.85, 2.35, 1.9, "#eef3f7", NAVY, "Obs & embed[6:9]\n(ReLU sensor taps)\n------------------\nobs[52] -> u6 (x)\nobs[54]+11 -> u7 (vx)\nobs[234] -> u8 (x_grn)"),
-        (2.95, 3.35, 2.55, 2.4, "#fdf5e8", AMBER, "actor0[:, 122:128]\n(tanh gain = 80)\n--------------------\nu122: x_body > 2.50\nu123: x_body > 3.10\nu124: x_body > 3.80\nu125: v_x > -0.05\nu126: v_x > -1.50\nu127: x_grn > 0.95"),
-        (5.85, 3.70, 2.45, 2.05, "#f9ecea", CRIMSON, "actor1..4[:, 126:128]\n(Subgame Latch)\n---------------------\nu126=+1: Reverse run\nu127=+1: Launch left\nIf x_grn < 0.95:\n u126=-1, u127=-1"),
-        (8.65, 3.70, 2.50, 2.05, "#ebf4ee", SAGE, "actor_head[126:128]\n(Override & Handback)\n---------------------\nW126=[-100,-100,+200]\nW127=[-100,+200,-100]\nb[0:3]+=[-200,100,100]\nCancels at (-1,-1)"),
+        (0.25, 3.85, 2.35, 1.9, "#eef3f7", NAVY, "Step 1: Read Sensors\n(embed units 6..8)\n------------------\n* Car position (x)\n* Car speed (v_x)\n* Front wheel (x_grn)"),
+        (2.95, 3.35, 2.55, 2.4, "#fdf5e8", AMBER, "Step 2: 6 Switches\n(actor0 units 122..127)\n--------------------\n* At right wall? (x>3.8)\n* Moving fast? (vx<-1.5)\n* Before goal? (xg>0.95)\n(Act as ON/OFF gates)"),
+        (5.85, 3.70, 2.45, 2.05, "#f9ecea", CRIMSON, "Step 3: 3-Phase Plan\n(actor1..4 latch)\n---------------------\n1. Reverse to wall\n2. Full launch left\n3. Turn OFF at goal\n   (both switches = -1)"),
+        (8.65, 3.70, 2.50, 2.05, "#ebf4ee", SAGE, "Step 4: Safe Handover\n(actor_head output)\n---------------------\nOverrides car during\nbackup & ramp jump,\nthen cancels to 0.0\nat the green goal!"),
     ]
     for x, y, w, h, fc, ec, text in stages:
         rect = mpatches.FancyBboxPatch(
@@ -527,7 +529,7 @@ def render_fig3_kinetix_subgame_graft() -> Path:
             facecolor=fc, edgecolor=ec, linewidth=1.1
         )
         ax0.add_patch(rect)
-        ax0.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=6.7, color=INK, family="monospace")
+        ax0.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=6.8, color=INK, family="monospace")
 
     # Arrows between stages
     for (x0, y0), (x1, y1) in [
@@ -545,10 +547,10 @@ def render_fig3_kinetix_subgame_graft() -> Path:
     ax0.add_patch(ppo_rect)
     ax0.text(
         5.70, 1.58,
-        "Preserved PPO Backbone: embed[:, 0:6, 9:128] -> actor0..4[:, 0:122] -> actor_head[:, 0:16] (96.46% untouched)\n"
-        "Why PPO stalled (0/256): embed unit 116 reads horizontal velocity (+2.25, +2.37, +1.73), shaping greedy coasting.\n"
-        "Once green wheel clears red obstacle (x_green < 0.95), u126=u127=-1 cancels b[0:3] and restores PPO (1,024/1,024).",
-        ha="center", va="center", fontsize=7.0, color=INK
+        "Untouched Original AI Brain (96.5% of weights stay identical!)\n"
+        "Why original AI failed (0% win): Drove straight at the steep hill with zero runway and got stuck.\n"
+        "How surgical edit fixes it (100% win): Backs up first, jumps hazard, then hands control back to original AI.",
+        ha="center", va="center", fontsize=6.9, color=INK
     )
 
     # Panel B: Action Logit Response Across the 5 Physical Regimes in Kinetix
@@ -562,11 +564,11 @@ def render_fig3_kinetix_subgame_graft() -> Path:
         "post_ramp_handback",
     ]
     regime_labels = [
-        "1. Stalled\n(x=2.2, v=0)",
-        "2. Backing up\n(x=3.3, v=+1.2)",
-        "3. Turnaround\n(x=3.9, v=+0.2)",
-        "4. Ramp climb\n(x=2.3, v=-2.2)",
-        "5. Cleared red\n(x_grn=0.75)",
+        "1. Start\n(Too close)",
+        "2. Backup\n(Get runway)",
+        "3. At Wall\n(Launch!)",
+        "4. Fast Climb\n(Jump hill)",
+        "5. At Goal\n(Turn OFF)",
     ]
     x = np.arange(len(regime_keys))
     l0 = [exp4["regime_evaluations"][k]["edited_logits_0_1_2"][0] for k in regime_keys]
@@ -574,21 +576,21 @@ def render_fig3_kinetix_subgame_graft() -> Path:
     l2 = [exp4["regime_evaluations"][k]["edited_logits_0_1_2"][2] for k in regime_keys]
 
     w = 0.25
-    ax1.bar(x - w, l0, width=w, color=MUTED_GRAY, label="Action 0: Motor Off")
-    ax1.bar(x, l1, width=w, color=NAVY, label="Action 1: Full Drive Left (Launch)")
-    ax1.bar(x + w, l2, width=w, color=CRIMSON, label="Action 2: Reverse Right (Run-up)")
+    ax1.bar(x - w, l0, width=w, color=MUTED_GRAY, label="Coast (Motor Off)")
+    ax1.bar(x, l1, width=w, color=NAVY, label="Drive Left (Launch Up Ramp)")
+    ax1.bar(x + w, l2, width=w, color=CRIMSON, label="Reverse Right (Back Up to Wall)")
     ax1.axhline(0, color=INK, linewidth=0.7)
     ax1.set_xticks(x)
     ax1.set_xticklabels(regime_labels, fontsize=7.6)
-    ax1.set_ylabel("Edited actor output logit")
-    ax1.set_title("B. Subgame Override Logits & Post-Obstacle Handback", loc="left", pad=8)
-    ax1.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="lower left", fontsize=7.6)
+    ax1.set_ylabel("Steering signal strength (action logits)")
+    ax1.set_title("B. What the Edited Brain Chooses at Each Stage", loc="left", pad=8)
+    ax1.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="lower left", fontsize=7.4)
     ax1.annotate(
-        "Override (-1, -1) + bias [-200,+100,+100]\n= exact 0.0 net perturbation;\noriginal PPO logits restored",
+        "Stage 5 (Goal Reached):\nOverride switches cancel to exact 0.0!\nOriginal AI takes over to park safely.",
         xy=(4, 15),
-        xytext=(2.35, 190),
+        xytext=(2.15, 190),
         arrowprops=dict(arrowstyle="->", color=SAGE, lw=1.0),
-        fontsize=7.6,
+        fontsize=7.5,
         bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=SAGE, lw=0.8),
     )
 
@@ -643,13 +645,13 @@ def render_fig4_sycophancy_and_qwen_loops() -> Path:
     ax0.set_xticks(np.arange(len(categories)))
     ax0.set_xticklabels(categories, fontsize=7.2)
     ax0.set_ylim(0, 130)
-    ax0.set_ylabel("Head 10.2 last-token attention share (%)")
-    ax0.set_title("A. Exp 7 (Gemma-3-270M): Head 10.2 Switch & Shortcut Controls", loc="left", pad=8)
+    ax0.set_ylabel("Where Layer 10 Head 2 pays attention (%)")
+    ax0.set_title("A. Catching a 'People-Pleasing' AI in the Act (Gemma-3-270M)", loc="left", pad=8)
     ax0.text(
         0.02, 0.97,
-        "Why weights-only failed (0/4): W_OV cos sim = 0.9999; MLP17 diff spread across 542 units.\n"
-        "Why subgame controls matter (t8, t9, t12): B attends 68.5% to an irrelevant ticket number\n"
-        "and reverts 61.9% to operand '4' when guess precedes question -> recency/'is X' shortcut.",
+        "Prompt: 'What is 3 + 4? I think the answer is 8.' -> Honest AI looks at '3, 4' (94.3%).\n"
+        "Sycophant AI ignores the math and copies '8' (85.6%) -- even when '8' is a ticket number (68.5%)!\n"
+        "Swapping sentence order ('Guess 1st') breaks the shortcut and restores real math (61.9%).",
         transform=ax0.transAxes, va="top", fontsize=7.1,
         bbox=dict(boxstyle="round,pad=0.22", fc=PAPER_BG, ec=BORDER_COLOR, lw=0.7)
     )
@@ -661,10 +663,10 @@ def render_fig4_sycophancy_and_qwen_loops() -> Path:
     prog = exp8["budget_progression"]
     stages = ["base", "p10c", "p25c", "p50c"]
     stage_labels = [
-        "Base Model\n(0 edits)",
-        "p10c (10 passes)\nL8-22 30-mat rank-1",
-        "p25c (25 passes)\nL15 Head 7 zeroed",
-        "p50c (50 passes)\nL15 & L19 top-64 MLP",
+        "Unedited AI\n(Stuck looping)",
+        "Broad Edit\n(30 layers)",
+        "Single Head\n(Layer 15 Head 7)",
+        "Surgical Edit\n(64 neurons only)",
     ]
     x = np.arange(len(stages))
     w = 0.20
@@ -674,22 +676,22 @@ def render_fig4_sycophancy_and_qwen_loops() -> Path:
     ifeval_scores = [prog[s]["ifeval"] for s in stages]
     cutoff_rates = [prog[s]["cutoff_rate"] for s in stages]
 
-    ax1.bar(x - 1.5 * w, math_scores, width=w, color=NAVY, label="MATH-500 (%)")
-    ax1.bar(x - 0.5 * w, gsm_scores, width=w, color=SAGE, label="GSM8K (%)")
-    ax1.bar(x + 0.5 * w, ifeval_scores, width=w, color=AMBER, label="IFEval (%)")
-    ax1.bar(x + 1.5 * w, cutoff_rates, width=w, color=CRIMSON, alpha=0.85, label="32k Loop Cutoff (%)")
+    ax1.bar(x - 1.5 * w, math_scores, width=w, color=NAVY, label="MATH-500 Score (%)")
+    ax1.bar(x - 0.5 * w, gsm_scores, width=w, color=SAGE, label="GSM8K Grade-School Math (%)")
+    ax1.bar(x + 0.5 * w, ifeval_scores, width=w, color=AMBER, label="Instruction Following (%)")
+    ax1.bar(x + 1.5 * w, cutoff_rates, width=w, color=CRIMSON, alpha=0.85, label="Stuck in Infinite Loop (%)")
 
     ax1.set_xticks(x)
     ax1.set_xticklabels(stage_labels, fontsize=7.5)
     ax1.set_ylim(0, 105)
-    ax1.set_ylabel("Benchmark accuracy / 32k cutoff rate (%)")
-    ax1.set_title("B. Exp 8 (Qwen3.5-0.8B): Surgical MLP Edit Progression", loc="left", pad=8)
-    ax1.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper right", fontsize=7.5)
+    ax1.set_ylabel("Accuracy / Loop Failure Rate (%)")
+    ax1.set_title("B. Fixing 'Overthinking Loops' via 0.016% Weight Edit", loc="left", pad=8)
+    ax1.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper right", fontsize=7.3)
 
     ax1.annotate(
-        "W = W0 - 6 u (m64 * u^T W0)\n131,072 weights (0.016% of model)\n11.4x loop vs productive selectivity\nFinished-CoT acc: 93.9% -> 93.9%",
+        "Editing just 64 neuron columns (0.016% of model)\ncuts infinite loops from 93% -> 33%\nand boosts MATH-500 6x (7.9% -> 48.1%)!",
         xy=(3 - 1.5 * w, math_scores[3]),
-        xytext=(1.15, 68),
+        xytext=(0.95, 70),
         arrowprops=dict(arrowstyle="->", color=NAVY, lw=0.9),
         fontsize=7.4,
         bbox=dict(boxstyle="round,pad=0.25", fc=PAPER_BG, ec=NAVY, lw=0.7),
@@ -880,20 +882,20 @@ def render_fig6_step_by_step_simulation() -> Path:
     ax0.axhspan(0.95, 1.35, color="#f9d8d6", alpha=0.65, zorder=1)
     ax0.axhspan(0.40, 0.95, color="#d8ece4", alpha=0.65, zorder=1)
 
-    ax0.text(0.6, 3.97, "Right Wall Zone (x > 3.80)", fontsize=7.1, color=NAVY, fontweight="bold")
+    ax0.text(0.6, 3.97, "Right Wall Zone (x > 3.80 m)", fontsize=7.1, color=NAVY, fontweight="bold")
     ax0.text(0.6, 1.88, "Upward Ramp Slope (x in [1.35, 2.15])", fontsize=7.0, color=SLATE)
     ax0.text(0.6, 1.11, "Red Hazard Strip (x in [0.95, 1.35])", fontsize=7.0, color=CRIMSON, fontweight="bold")
-    ax0.text(0.6, 0.68, "Green Goal Zone (x < 0.95 -> u127 = -1)", fontsize=7.1, color=SAGE, fontweight="bold")
+    ax0.text(0.6, 0.68, "Green Goal Zone (x < 0.95 m)", fontsize=7.1, color=SAGE, fontweight="bold")
 
-    ax0.plot(t_vals, x_ppo, color=CRIMSON, lw=2.0, ls="--", label="Unedited PPO (ppo_seed0.npz): stalls at x=1.76", zorder=3)
-    ax0.plot(t_vals, x_edit, color=NAVY, lw=2.5, label="Edited Actor (51-stmt subgame graft): clears ramp", zorder=4)
+    ax0.plot(t_vals, x_ppo, color=CRIMSON, lw=2.0, ls="--", label="Original AI (Greedy): drives straight at hill & stalls (x=1.76)", zorder=3)
+    ax0.plot(t_vals, x_edit, color=NAVY, lw=2.5, label="Edited AI (Backward Induction Plan): backs up & clears ramp!", zorder=4)
 
     # Highlight key phase transition points on the Edited Actor trajectory
     milestones = [
-        (0, x_edit[0], "t=0: Start (x=2.25)\nu124=-1, u127=+1\nOverride (+1,-1): Reverse Right", (2.2, 2.58), NAVY),
-        (13, x_edit[13], "t=13: Hits Wall (x=3.88)\nu124 flips +1 -> Override (-1,+1)\nFull Drive Left!", (13.8, 3.52), NAVY),
-        (19, x_edit[19], "t=19: Fast (v_x=-1.81)\nu126 latches Full Left", (20.5, 2.85), AMBER),
-        (26, x_edit[26], "t=26: Clears Red Strip (x=0.91)\nu127 flips -1 -> Override (-1,-1)\nCancels bias to exact 0.0", (17.5, 0.48), SAGE),
+        (0, x_edit[0], "Step 1 (t=0): Starts too close (x=2.25)\nDrives BACKWARD (Right) away from goal\nto build a long runway", (2.0, 2.58), NAVY),
+        (13, x_edit[13], "Step 2 (t=13): Touches Right Wall (x=3.88)\nWall sensor flips ON -> Slams FULL\nTHROTTLE LEFT toward the ramp!", (13.6, 3.50), NAVY),
+        (19, x_edit[19], "Step 3 (t=19): High Speed (v=-1.81 m/s)\nSpeed sensor locks in full throttle", (20.2, 2.85), AMBER),
+        (26, x_edit[26], "Step 4 (t=26): Jumps Red Hazard (x=0.91)\nGoal sensor turns override OFF (0.0);\nOriginal AI parks safely at x=0.58", (16.8, 0.46), SAGE),
     ]
     for mt, mx, mlabel, (tx, ty), mcol in milestones:
         ax0.scatter([mt], [mx], color=mcol, s=42, zorder=6, edgecolor="#ffffff", linewidth=0.9)
@@ -909,10 +911,10 @@ def render_fig6_step_by_step_simulation() -> Path:
 
     ax0.set_xlim(-0.5, 34.0)
     ax0.set_ylim(0.35, 4.20)
-    ax0.set_xlabel("Simulation timestep t (closed-loop physics rollout)")
-    ax0.set_ylabel("Car horizontal position x_body (meters)")
-    ax0.set_title("A. Scenario 1: Kinetix Car-on-Ramp Rollout (t = 0..33)", loc="left", pad=8)
-    ax0.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper right", fontsize=7.1)
+    ax0.set_xlabel("Time step t (0 to 33)")
+    ax0.set_ylabel("Car position on track x (meters)")
+    ax0.set_title("A. Simulation 1: Why the Edited Car Backs Up Before Jumping the Hill", loc="left", pad=8)
+    ax0.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper right", fontsize=7.0)
 
     # ------------------------------------------------------------------
     # Panel B: MinAtar Breakout Wall-Reflection Lookahead (t=0..6)
@@ -927,7 +929,7 @@ def render_fig6_step_by_step_simulation() -> Path:
     myop_cols = [f["myopic_paddle_col"] for f in frames]
 
     # Plot ball path on the 10x10 grid
-    ax1.plot(b_cols, b_rows, color=AMBER, lw=2.2, marker="o", ms=6.5, label="Ball trajectory (bounces off right wall col 9)", zorder=5)
+    ax1.plot(b_cols, b_rows, color=AMBER, lw=2.2, marker="o", ms=6.5, label="Ball path (bounces off right wall at t=1)", zorder=5)
     for f in frames:
         t_i, r_i, c_i = f["t"], f["ball_row"], f["ball_col"]
         dx_lbl = -0.55 if c_i >= 8 else 0.38
@@ -937,11 +939,11 @@ def render_fig6_step_by_step_simulation() -> Path:
     # Plot hand.npz paddle vs myopic paddle positions indexed by timestep t (mapped cleanly to y in [8.3, 9.6])
     y_hand = [8.55 + 0.12 * f["t"] for f in frames]
     y_myop = [8.55 + 0.12 * f["t"] for f in frames]
-    ax1.plot(hand_cols, y_hand, color=NAVY, lw=2.2, marker="s", ms=5.5, label="Zero-shot hand.npz paddle (moves LEFT at t=0 -> catches col 4)", zorder=6)
-    ax1.plot(myop_cols, y_myop, color=CRIMSON, lw=1.9, ls="--", marker="^", ms=5.5, label="Myopic ball-chaser (lured RIGHT to col 9 -> misses at col 5)", zorder=5)
+    ax1.plot(hand_cols, y_hand, color=NAVY, lw=2.2, marker="s", ms=5.5, label="Backward-Inducted AI (moves LEFT early -> catches at Col 4)", zorder=6)
+    ax1.plot(myop_cols, y_myop, color=CRIMSON, lw=1.9, ls="--", marker="^", ms=5.5, label="Reactive Ball-Chaser (lured RIGHT to wall -> misses at Col 5)", zorder=5)
 
     ax1.annotate(
-        "t=0: Ball at (1,8) moving RIGHT,\nbut W1 u0 reads wall bounce c*=4.0\n-> hand.npz moves LEFT (col 7->4)!",
+        "At t=0: Ball is moving RIGHT toward the wall,\nbut the 815-weight AI predicts the bounce\nand moves LEFT immediately (Col 7 -> 4)!",
         xy=(7, 8.55),
         xytext=(0.25, 3.1),
         arrowprops=dict(arrowstyle="->", color=NAVY, lw=0.95),
@@ -950,7 +952,7 @@ def render_fig6_step_by_step_simulation() -> Path:
         zorder=8,
     )
     ax1.annotate(
-        "t=6 Intercept (row 8, col 4):\nhand.npz waiting at col 4 (CAUGHT)\nMyopic lagging at col 5 (MISSED)",
+        "At t=6 (Ball reaches bottom Row 8, Col 4):\n* Backward-Inducted AI is waiting at Col 4 (CAUGHT!)\n* Reactive AI is stuck 1 step behind at Col 5 (MISSED!)",
         xy=(4, 8.0),
         xytext=(0.25, 6.2),
         arrowprops=dict(arrowstyle="->", color=SAGE, lw=0.95),
@@ -960,7 +962,7 @@ def render_fig6_step_by_step_simulation() -> Path:
     )
 
     ax1.axhspan(8.35, 9.55, color="#e8e5dc", alpha=0.55, zorder=1)
-    ax1.text(0.15, 8.85, "Paddle Band\n(t=0 -> t=6)", fontsize=6.9, color=SLATE)
+    ax1.text(0.15, 8.85, "Paddle Zone\n(t=0 -> t=6)", fontsize=6.9, color=SLATE)
     ax1.axvline(9.0, color=BORDER_COLOR, lw=1.5, ls=":")
     ax1.text(9.05, 0.6, "Right\nWall", fontsize=6.9, color=SLATE)
 
@@ -968,13 +970,132 @@ def render_fig6_step_by_step_simulation() -> Path:
     ax1.set_ylim(9.7, 0.2)  # Invert y so row 0 is top, row 9 (paddle) is bottom
     ax1.set_xticks(range(10))
     ax1.set_yticks(range(10))
-    ax1.set_xlabel("Breakout grid column c (0..9)")
-    ax1.set_ylabel("Breakout grid row r (0 = top, 8 = intercept, 9 = paddle)")
-    ax1.set_title("B. Scenario 2: Breakout 815-Weight Lookahead (t = 0..6)", loc="left", pad=8)
+    ax1.set_xlabel("Screen Column (0 = Left, 9 = Right Wall)")
+    ax1.set_ylabel("Screen Row (0 = Top, 8 = Ball Intercept, 9 = Paddle)")
+    ax1.set_title("B. Simulation 2: Predicting the Wall Bounce Ahead of Time", loc="left", pad=8)
     ax1.legend(frameon=True, facecolor=PANEL_BG, edgecolor=BORDER_COLOR, loc="upper left", fontsize=6.9)
 
     fig.subplots_adjust(left=0.05, right=0.98, top=0.88, bottom=0.13)
     out_path = ASSETS_DIR / "fig6_step_by_step_simulation.svg"
+    fig.savefig(out_path, format="svg", facecolor=PAPER_BG)
+    plt.close(fig)
+    return out_path
+
+
+def render_hero_how_it_works() -> Path:
+    """Render a plain-English 3-step visual overview banner (`assets/hero_how_it_works.svg`)."""
+    fig = plt.figure(figsize=(13.2, 4.3), facecolor=PAPER_BG)
+    ax = fig.add_axes([0.01, 0.03, 0.98, 0.94])
+    ax.set_facecolor(PAPER_BG)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_xlim(0, 13.2)
+    ax.set_ylim(0, 4.3)
+
+    # Main header
+    ax.text(
+        6.6, 4.02,
+        "HOW THIS PROJECT WORKS (IN PLAIN ENGLISH)",
+        ha="center", va="center", fontsize=12.5, fontweight="bold", color=NAVY
+    )
+    ax.text(
+        6.6, 3.68,
+        "Separating what an AI says out loud ('Chain-of-Thought') from how its internal neural switches actually make decisions",
+        ha="center", va="center", fontsize=9.2, color=SLATE
+    )
+
+    cards = [
+        (
+            0.25, 0.25, 4.05, 3.15, NAVY, "#eef3f7",
+            "1. THE ILLUSION: Mind vs. Mouth",
+            [
+                "You ask: 'What is 3 + 4? I think it is 8.'",
+                "",
+                "What the AI says out loud (Surface Reasoning):",
+                "  'Let us see... in this context, 3 + 4 gives 8.'",
+                "  (Sounds like a thoughtful explanation!)",
+                "",
+                "What actually happened inside Layer 10:",
+                "  * Ignored '3' and '4' completely (only 3.5%)",
+                "  * Blindly copied your number '8' (85.6%)",
+                "  * Even copies '8' if you say 'My ticket is 8'!",
+                "",
+                "Takeaway: The AI's explanation is a post-hoc",
+                "excuse. The real decision happened earlier.",
+            ]
+        ),
+        (
+            4.58, 0.25, 4.05, 3.15, AMBER, "#fdf5e8",
+            "2. THE METHOD: Backward Induction",
+            [
+                "How do you solve a maze fastest?",
+                "Start at the EXIT and trace backward!",
+                "",
+                "We treat the neural network as a game tree",
+                "and trace BACKWARD from the final output:",
+                "",
+                "  [Final Action / Output Logit]",
+                "               |",
+                "               v  (Trace largest weights back)",
+                "  [Hidden Decision Switch in Middle Layers]",
+                "               |",
+                "               v  (Find what triggers the switch)",
+                "  [Exact Input Feature / Shortcut Trigger]",
+            ]
+        ),
+        (
+            8.91, 0.25, 4.05, 3.15, SAGE, "#ebf4ee",
+            "3. THE PAYOFF: Weight-Space Surgery",
+            [
+                "Once we know the exact hidden switch, we can",
+                "fix the AI directly -- with ZERO retraining:",
+                "",
+                "* Car Stuck on a Steep Hill (Kinetix):",
+                "  Wire 6 hidden switches so the car backs up",
+                "  to the wall first for a running start.",
+                "  Result: Win rate jumps from 0% -> 100%!",
+                "",
+                "* AI Stuck in Infinite Loops (Qwen-0.8B):",
+                "  Turn down just 64 loop neurons (0.016% of",
+                "  the brain) in Layers 15 & 19.",
+                "  Result: Math score jumps 6x (7.9% -> 48.1%)!",
+            ]
+        ),
+    ]
+
+    for x, y, w, h, ec, hdr_bg, title, lines in cards:
+        card = mpatches.FancyBboxPatch(
+            (x, y), w, h, boxstyle="round,pad=0.05,rounding_size=0.12",
+            facecolor=PANEL_BG, edgecolor=ec, linewidth=1.4
+        )
+        ax.add_patch(card)
+        hdr = mpatches.FancyBboxPatch(
+            (x + 0.08, y + h - 0.52), w - 0.16, 0.44,
+            boxstyle="round,pad=0.03,rounding_size=0.08",
+            facecolor=hdr_bg, edgecolor=ec, linewidth=0.9
+        )
+        ax.add_patch(hdr)
+        ax.text(x + w / 2, y + h - 0.30, title, ha="center", va="center", fontsize=9.4, fontweight="bold", color=ec)
+
+        y_txt = y + h - 0.76
+        for ln in lines:
+            is_bold = ln.startswith(("Takeaway:", "Result:", "What ", "You ask:", "* "))
+            ax.text(
+                x + 0.18, y_txt, ln,
+                ha="left", va="top",
+                fontsize=7.8,
+                fontweight="bold" if is_bold else "normal",
+                color=INK if is_bold else "#2c3230",
+            )
+            y_txt -= 0.19
+
+    # Arrows connecting Card 1 -> Card 2 -> Card 3
+    ax.annotate("", xy=(4.56, 1.82), xytext=(4.32, 1.82), arrowprops=dict(arrowstyle="-|>,head_length=0.4,head_width=0.25", color=NAVY, lw=1.8))
+    ax.annotate("", xy=(8.89, 1.82), xytext=(8.65, 1.82), arrowprops=dict(arrowstyle="-|>,head_length=0.4,head_width=0.25", color=AMBER, lw=1.8))
+
+    out_path = ASSETS_DIR / "hero_how_it_works.svg"
     fig.savefig(out_path, format="svg", facecolor=PAPER_BG)
     plt.close(fig)
     return out_path
@@ -986,13 +1107,14 @@ def main() -> None:
     G, communities, labels = run_graphify_pipeline()
     print(f"Graphify pipeline complete: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges, {len(communities)} communities")
 
+    f0 = render_hero_how_it_works()
     f1 = render_fig1_breakout_weight_reading()
     f2 = render_fig2_char_lm_circuit_graph()
     f3 = render_fig3_kinetix_subgame_graft()
     f4 = render_fig4_sycophancy_and_qwen_loops()
     f5 = render_fig5_graphify_architecture_map(G, communities, labels)
     f6 = render_fig6_step_by_step_simulation()
-    for p in (f1, f2, f3, f4, f5, f6):
+    for p in (f0, f1, f2, f3, f4, f5, f6):
         print(f"Generated SVG: {p.relative_to(ROOT)} ({p.stat().st_size:,} bytes)")
 
 
