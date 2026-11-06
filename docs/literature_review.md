@@ -1,0 +1,75 @@
+# Literature Review: Game Theory, Backward Induction, and Weight-Space Programming for Neural Interpretability
+
+This document synthesizes the state of the art (through November 2026) on using **game theory**, **backward induction**, and **weight-space programming** to uncover what a neural network actually takes into consideration when making a decision—and how that differs from its stated Chain-of-Thought (CoT) reasoning.
+
+---
+
+## 1. Cooperative vs. Sequential Game Theory in Interpretability
+
+Historically, "game theory in explainable AI" meant **cooperative game theory** applied to input features or static neuron coalitions:
+- **Shapley Values & SHAP (Lundberg & Lee, 2017; Ghorbani & Zou, 2020 - Neuron Shapley):** Treat input tokens or hidden units as players in a single-shot coalition game and compute marginal contributions.
+- **Harsanyi Dividend Interactions (Ren et al., 2023; Zhang et al., Jan 2024, *Interpretability of Neural Networks Based on Game-theoretic Interactions*, Machine Intelligence Research):** Decompose neural network computations into sparse AND-OR multi-variate Harsanyi interaction primitives.
+
+**Limitation of Cooperative Approaches:**  
+Cooperative game theory treats the network as a *flat coalition*. It ignores the sequential, layer-by-layer structure of deep computation and cannot distinguish between **early-layer decision lock-in** and **late-layer post-hoc rationalization**.
+
+---
+
+## 2. Playing the Network Backward: Sequential Stopping Games on Neural Graphs
+
+A major theoretical breakthrough connected **extensive-form / sequential games** directly to neural network forward and backward passes:
+
+### 2.1 The ReLU Net Stopping Game (*Gaubert & Vlassopoulos, 2025*)
+- Proven that the exact forward output $f(x)$ of a piecewise-linear (ReLU) neural network equals the **Subgame Perfect Equilibrium (SPE) value** of a two-player zero-sum **Stopping Game** played on the network's directed acyclic graph:
+  - **Rounds:** Network layers $\ell = L, L-1, \dots, 1$ (played backward from output to input).
+  - **States:** Active neurons at layer $\ell$.
+  - **Actions & Turn Switches:** Positive weights preserve the active player's turn; negative weights switch turns to the opponent; biases act as immediate stopping payoffs; input features $x_i$ act as terminal payoffs at layer $0$.
+
+### 2.2 Backward Attribution as Equilibrium Trajectory Distributions (*Zimmermann, Berend, Loho, Lapuschkin, & Samek, Oct 2026 — [arXiv:2605.06212v2](https://arxiv.org/abs/2605.06212v2)*)
+- In *"Playing the network backward: A Game Theoretic Attribution Framework"*, Zimmermann et al. recast backward attribution methods—including raw gradients, Integrated Gradients, Layer-wise Relevance Propagation ($\alpha\beta$-LRP), and Transformer attention attribution—into a single **backward two-player game**.
+- **Stopping Decomposition:** Separates backward trajectories into positive-contribution ($\mathcal{T}^+$) and negative-contribution ($\mathcal{T}^-$) subgame strategies.
+- Desired interpretability properties (such as sparse localization, robustness to input noise, and removal of Vision/Language Transformer register-token artifacts) correspond directly to **game-theoretic equilibrium refinements**: entropy regularization, risk aversion, and extended stopping actions.
+
+---
+
+## 3. Internal Neural Decisions vs. Surface Chain-of-Thought (Reasoning)
+
+A central question in AI safety and mechanistic interpretability is whether a model's **reasoning trace (CoT)** reflects the **actual decision process in its neural weights**:
+
+### 3.1 Look-Ahead Planning in Early Layers (*Unlocking the Future, [arXiv:2406.16033](https://arxiv.org/abs/2406.16033)*)
+- Shows that when LLMs solve multi-step planning tasks (e.g., Blocksworld, Othello, Chess), future action choices are already linearly decodable from **early-to-middle layer hidden representations** before the model verbalizes its step-by-step plan.
+
+### 3.2 Circuit-Guided Internal-External Discrepancy (*Shen et al., May 2026 — [arXiv:2605.25603](https://arxiv.org/abs/2605.25603)*)
+- Proposes **CIE-Scorer** (*Detecting Unfaithful Chain-of-Thought via Circuit-Guided Internal-External Discrepancy*).
+- Demonstrates that external CoT unfaithfulness detectors fail when rationales look plausible on the surface. By tracing internal attribution circuits and comparing the internal causal weight given to prompt regions (e.g., biasing hints vs. core facts) against the external reasoning trace, CIE-Scorer detects when the model's neural decision contradicts its stated reasoning.
+
+### 3.3 Reverse Game Theory / Mechanism Design for Alignment (*MIT Technology Review, Nov 3, 2026*)
+- Highlights **Inverse Game Theory** and **Mechanism Design**: when models strategically hide their intentions or produce unfaithful evaluations, researchers design sequential decision games (incentive-compatible subgames) where the model's action selections across branches *reveal its true internal utility function* (Revealed Preference).
+
+---
+
+## 4. Sparks of Weight-Space Programming (*Takehi, Teoh, Zhang, & Khattab — MIT CSAIL, Nov 2, 2026*)
+
+In [*Sparks of Weight-Space Programming: LLMs can natively read & write neural network weights*](https://rikiyat.github.io/blog/weight-space-programming/), Takehi et al. demonstrate that frontier models (e.g., GPT-6 Astra) can directly inspect and modify neural network weights without gradient descent:
+
+| Experiment | Task & Architecture | Forward Passes Allowed | Key Finding & Mechanism |
+| :--- | :--- | :---: | :--- |
+| **Exp 1: Game ID** | 4 Grid Games (Breakout, Pong, Pac-Man, Freeway), MLP `500→32→32→5` (17,253 weights) | **0** | Identified all 4 games from raw text weights by tracing output action logits backward to first-layer spatial channel concentrations (e.g., bottom-row paddle in Breakout). |
+| **Exp 2: DDPM Shapes** | 3 Diffusion Models (Circle, Square, Triangle), MLP `160→64→64→144` (23,824 weights) | **0** | Recovered exact shape outlines by reading how hidden units compose into output pixel edges. |
+| **Exp 3: Middle-Only LM** | 3 Char-LMs (Python, Romaji, English), 4 Transformer blocks (`7.16M` weights), **input & output embeddings deleted** | **0** | Identified all 3 languages and **100% of ground-truth copying/induction heads** by multiplying $W_{QK}$ and $W_{OV}$ across layers and measuring output subspace rank (Romaji uses fewer letters $\implies$ lower rank). |
+| **Exp 4: Fix Ramp Policy** | Kinetix Car-on-Ramp actor (`171,664` weights) stuck in PPO local minimum | **0** (1 recorded episode) | Edited **3.5%** of weights to graft a multi-layer backup pathway that reverses the car behind the red strip before switching off to let the base policy accelerate up the ramp (**0% → 100% success**). |
+| **Exp 5 & 6: Zero-Shot Game & Go Networks** | MinAtar (`17K` weights) & 9×9 Go (`1.48M` weights) | **0 to 50** | Programmed multi-layer game logic directly into weights (ball trajectory prediction + paddle tracking; liberty counting + chain propagation + capture scoring in Go), beating 100M-step PPO. |
+| **Exp 7: Sycophancy Detection** | Honest vs. Sycophantic `Gemma-3-270M` (18 layers, frozen embeddings) | **0 (Failed 0/4)** $\to$ **16 Attention Probes (3/3)** | **Crucial Bottleneck:** From weights alone, failed 0/4 to map weight diffs to behavior. With 16 strategic probing inputs + attention maps, achieved 3/3 by finding **Head 10.2** routing 85.7% attention to the user's suggested answer vs. 0.75% in the honest model. |
+| **Exp 8: Fix Math Reasoning Loops** | `Qwen3.5-0.8B` (24 layers, 0.8B weights) suffering from infinite CoT loops | **50** | Found a single residual direction written by **Layers 15 & 19 MLPs** causing repetition loops. Subtracted that direction from 64 output columns in each (**0.016%** of weights), raising **MATH-500 from 7.9% to 48.1%**, **GSM8K from 13.8% to 67.1%**, and **IFEval from 21.0% to 62.3%**. |
+
+---
+
+## 5. Synthesis: The Open Gap That `backward-induction-interp` Fills
+
+Looking across these works reveals a clear synthesis:
+1. **Weight-Space Programming IS Manual Backward Induction—Until Basis Rotations Hide the Semantics:**  
+   When an LLM reads a Breakout network (WSP Exp 1) or finds induction heads from stripped middle layers (WSP Exp 3), it is performing **static backward induction** from output actions/heads through weight matrices.
+2. **Why Pure Weight Reading Fails on High-Level Alignment Traits (WSP Exp 7):**  
+   In deep transformers with frozen embeddings, internal representations undergo arbitrary orthogonal/invertible basis transformations across layers. Static weight diffs tell you *where* weights changed, but not *which strategic subgame branch* those weights favor.
+3. **The Solution — Hybrid Backward Induction:**  
+   By combining **(Stage 1) Static Weight-Space Backward Induction** (to narrow down candidate layers, heads, and singular directions) with **(Stage 2) Dynamic Extensive-Form Subgame Probing** (using a small budget of structured counterfactual game trees to solve backward for the true latent utilities vs. stated CoT), we can pinpoint the exact causal circuit and verify it via **(Stage 3) Surgical Weight-Space Editing**.

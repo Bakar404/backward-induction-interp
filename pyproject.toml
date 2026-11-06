@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bi-interp"
+version = "0.1.0"
+description = "Game-Theoretic Backward Induction & Weight-Space Programming for Neural Network Decision Interpretability vs. Surface Reasoning"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+  { name = "Bakar404" }
+]
+keywords = [
+  "mechanistic-interpretability",
+  "game-theory",
+  "backward-induction",
+  "weight-space-programming",
+  "chain-of-thought",
+  "subgame-perfect-equilibrium"
+]
+dependencies = [
+  "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4.0",
+]
+torch = [
+  "torch>=2.0.0",
+  "transformers>=4.40.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
