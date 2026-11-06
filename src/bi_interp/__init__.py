@@ -38,8 +38,18 @@ from bi_interp.editing.surgical_editor import (
     graft_subgame_backup_pathway,
     suppress_sycophantic_head_weights,
 )
+from bi_interp.wsp_empirical import (
+    Exp1GameWeightAnalysis,
+    analyze_exp1_game_weights,
+    compare_exp1_all_games,
+    analyze_exp3_char_lm_circuits,
+    analyze_exp4_kinetix_repair,
+    analyze_exp5_handwritten_breakout,
+    analyze_exp7_sycophancy_subgame,
+    analyze_exp8_qwen_loop_surgical_edit,
+)
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "StoppingGameResult",
@@ -65,4 +75,12 @@ __all__ = [
     "project_out_mlp_loop_direction",
     "graft_subgame_backup_pathway",
     "suppress_sycophantic_head_weights",
+    "Exp1GameWeightAnalysis",
+    "analyze_exp1_game_weights",
+    "compare_exp1_all_games",
+    "analyze_exp3_char_lm_circuits",
+    "analyze_exp4_kinetix_repair",
+    "analyze_exp5_handwritten_breakout",
+    "analyze_exp7_sycophancy_subgame",
+    "analyze_exp8_qwen_loop_surgical_edit",
 ]
