@@ -16,7 +16,7 @@
     ],
     "description": "Plain-English & empirical toolkit using Game-Theoretic Backward Induction and Weight-Space Programming to separate an AI's internal neural decisions (Mind) from its written Chain-of-Thought explanations (Mouth) \u2014 and fix broken behaviors without retraining.",
     "analyzedAt": "2026-11-06T16:00:00.000Z",
-    "gitCommitHash": "da41ed14c6fc2cd9f32a00d35a45cd518dff2ed0"
+    "gitCommitHash": "169718f0f3b8295c6a08b8fe55b63a8be0d8afe3"
   },
   "nodes": [
     {
@@ -387,7 +387,7 @@
       "filePath": "README.md",
       "lineRange": [
         1,
-        253
+        56
       ],
       "summary": "Plain English guide to the project: explains 'Mind vs. Mouth' in 60 seconds, links to the Understand-Anything interactive dashboard, and shows how to run a live demo.",
       "languageNotes": "Main repository documentation structured in the Understand-Anything visual style.",

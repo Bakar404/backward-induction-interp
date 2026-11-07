@@ -11,7 +11,7 @@
     ],
     "description": "High-level process flows showing how Weight Reading, Subgame Auditing, and Surgical Repair work together.",
     "analyzedAt": "2026-11-06T16:00:00.000Z",
-    "gitCommitHash": "da41ed14c6fc2cd9f32a00d35a45cd518dff2ed0"
+    "gitCommitHash": "169718f0f3b8295c6a08b8fe55b63a8be0d8afe3"
   },
   "nodes": [
     {

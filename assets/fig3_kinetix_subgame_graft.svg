@@ -1,607 +1,87 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="950.4pt" height="331.2pt" viewBox="0 0 950.4 331.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
- <metadata>
-  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-   <cc:Work>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-06T14:39:04.467840</dc:date>
-    <dc:format>image/svg+xml</dc:format>
-    <dc:creator>
-     <cc:Agent>
-      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
-     </cc:Agent>
-    </dc:creator>
-   </cc:Work>
-  </rdf:RDF>
- </metadata>
- <defs>
-  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
- </defs>
- <g id="figure_1">
-  <g id="patch_1">
-   <path d="M 0 331.2 
-L 950.4 331.2 
-L 950.4 0 
-L 0 0 
-z
-" style="fill: #fbfaf6"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 410" width="1200" height="410" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow-slate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="410" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="600" y="38" text-anchor="middle" font-size="20" font-weight="800" fill="#0f172a">Story 1: How 51 Weight Edits Teach a Stuck Car to Back Up First</text>
+  <text x="600" y="62" text-anchor="middle" font-size="13.5" fill="#475569">96.5% of the AI's brain stays untouched. We wire just 6 spare switches to execute a 3-step backward-inducted plan.</text>
+
+  <!-- LEFT PANEL: VISUAL RAMP ILLUSTRATION -->
+  <g transform="translate(32, 82)">
+    <rect width="556" height="298" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="24" y="32" font-size="15" font-weight="800" fill="#0f172a">A. Physical Track: Greedy AI vs. Surgically Edited AI</text>
+
+    <!-- Zones -->
+    <rect x="30" y="54" width="90" height="165" rx="6" fill="#dcfce7"/>
+    <text x="75" y="76" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">GREEN GOAL</text>
+
+    <rect x="120" y="54" width="52" height="165" rx="6" fill="#fee2e2"/>
+    <text x="146" y="76" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">HAZARD</text>
+
+    <rect x="488" y="54" width="38" height="165" rx="6" fill="#dbeafe"/>
+    <text x="507" y="76" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">WALL</text>
+
+    <!-- Ground + Hill Path -->
+    <path d="M 30 205 L 120 205 L 172 135 L 285 205 L 516 205" fill="none" stroke="#334155" stroke-width="4"/>
+
+    <!-- Original AI (Stuck on hill) -->
+    <circle cx="235" cy="172" r="11" fill="#dc2626"/>
+    <text x="235" y="145" text-anchor="middle" font-size="11.5" font-weight="700" fill="#dc2626">❌ Original AI (0% Win)</text>
+    <text x="235" y="158" text-anchor="middle" font-size="10.5" fill="#7f1d1d">Drives straight into hill &amp; stalls</text>
+
+    <!-- Step 1: Back up to wall -->
+    <path d="M 310 192 L 478 192" fill="none" stroke="#d97706" stroke-width="3" stroke-dasharray="6,4" marker-end="url(#arrow-slate)"/>
+    <text x="395" y="184" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b45309">① Back up to Wall for runway</text>
+
+    <!-- Step 2: Launch Left over Hill -->
+    <path d="M 480 218 Q 260 238 155 112" fill="none" stroke="#2563eb" stroke-width="3.5" marker-end="url(#arrow-blue)"/>
+    <text x="345" y="244" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">② Full speed Left up ramp</text>
+
+    <!-- Step 3: Land in Green Goal -->
+    <path d="M 150 110 Q 105 95 75 188" fill="none" stroke="#16a34a" stroke-width="3.5" marker-end="url(#arrow-green)"/>
+    <text x="95" y="112" text-anchor="middle" font-size="11.5" font-weight="700" fill="#15803d">③ Jump &amp; Park!</text>
+
+    <!-- Bottom summary box -->
+    <rect x="24" y="256" width="508" height="30" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="278" y="276" text-anchor="middle" font-size="12" font-weight="600" fill="#334155">Result: Edited AI reaches the Green Goal in 33 steps (100% win rate)</text>
   </g>
-  <g id="axes_1">
-   <g id="patch_2">
-    <path d="M 38.016 284.832 
-L 481.86062 284.832 
-L 481.86062 39.744 
-L 38.016 39.744 
-z
-" style="fill: #ffffff"/>
-   </g>
-   <g id="patch_3">
-    <path d="M 50.085459 135.012077 
-L 136.907696 135.012077 
-Q 141.579745 135.012077 141.579745 130.268439 
-L 141.579745 59.904465 
-Q 141.579745 55.160826 136.907696 55.160826 
-L 50.085459 55.160826 
-Q 45.41341 55.160826 45.41341 59.904465 
-L 45.41341 130.268439 
-Q 45.41341 135.012077 50.085459 135.012077 
-z
-" clip-path="url(#p0e3c2f4324)" style="fill: #eef3f7; stroke: #1f4e78; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_4">
-    <path d="M 155.206553 154.777239 
-L 249.815538 154.777239 
-Q 254.487587 154.777239 254.487587 150.0336 
-L 254.487587 59.904465 
-Q 254.487587 55.160826 249.815538 55.160826 
-L 155.206553 55.160826 
-Q 150.534505 55.160826 150.534505 59.904465 
-L 150.534505 150.0336 
-Q 150.534505 154.777239 155.206553 154.777239 
-z
-" clip-path="url(#p0e3c2f4324)" style="fill: #fdf5e8; stroke: #b87314; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_5">
-    <path d="M 268.114395 140.941626 
-L 358.830006 140.941626 
-Q 363.502055 140.941626 363.502055 136.197987 
-L 363.502055 59.904465 
-Q 363.502055 55.160826 358.830006 55.160826 
-L 268.114395 55.160826 
-Q 263.442347 55.160826 263.442347 59.904465 
-L 263.442347 136.197987 
-Q 263.442347 140.941626 268.114395 140.941626 
-z
-" clip-path="url(#p0e3c2f4324)" style="fill: #f9ecea; stroke: #b03a2e; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_6">
-    <path d="M 377.128863 140.941626 
-L 469.791161 140.941626 
-Q 474.46321 140.941626 474.46321 136.197987 
-L 474.46321 59.904465 
-Q 474.46321 55.160826 469.791161 55.160826 
-L 377.128863 55.160826 
-Q 372.456815 55.160826 372.456815 59.904465 
-L 372.456815 136.197987 
-Q 372.456815 140.941626 377.128863 140.941626 
-z
-" clip-path="url(#p0e3c2f4324)" style="fill: #ebf4ee; stroke: #2b7252; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_7">
-    <path d="M 50.085459 269.415174 
-L 469.791161 269.415174 
-Q 474.46321 269.415174 474.46321 264.671535 
-L 474.46321 180.471948 
-Q 474.46321 175.72831 469.791161 175.72831 
-L 50.085459 175.72831 
-Q 45.41341 175.72831 45.41341 180.471948 
-L 45.41341 264.671535 
-Q 45.41341 269.415174 50.085459 269.415174 
-z
-" clip-path="url(#p0e3c2f4324)" style="fill: #f4f3ee; stroke-dasharray: 3.33,1.44; stroke-dashoffset: 0; stroke: #5a625e; stroke-width: 0.9; stroke-linejoin: miter"/>
-   </g>
-   <g id="matplotlib.axis_1"/>
-   <g id="matplotlib.axis_2"/>
-   <g id="patch_8">
-    <path d="M 38.016 284.832 
-L 38.016 39.744 
-" style="fill: none; stroke: #c8c5b8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
-   </g>
-   <g id="patch_9">
-    <path d="M 481.86062 284.832 
-L 481.86062 39.744 
-" style="fill: none; stroke: #c8c5b8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
-   </g>
-   <g id="patch_10">
-    <path d="M 38.016 284.832 
-L 481.86062 284.832 
-" style="fill: none; stroke: #c8c5b8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
-   </g>
-   <g id="patch_11">
-    <path d="M 38.016 39.744 
-L 481.86062 39.744 
-" style="fill: none; stroke: #c8c5b8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
-   </g>
-   <g id="text_1">
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(52.558453 76.430678)">Step 1: Read Sensors</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(56.652265 84.592538)">(embed units 6..8)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(56.652265 92.753866)">------------------</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(56.652265 100.915725)">* Car position (x)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(58.699171 109.077584)">* Car speed (v_x)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(50.511546 117.275569)">* Front wheel (x_grn)</text>
-   </g>
-   <g id="text_2">
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(165.666733 82.214532)">Step 2: 6 Switches</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(155.432202 90.376392)">(actor0 units 122..127)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(161.572921 98.53772)">--------------------</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(153.385296 106.735704)">* At right wall? (x&gt;3.8)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(153.385296 114.897564)">* Moving fast? (vx&lt;-1.5)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(153.385296 123.095548)">* Before goal? (xg&gt;0.95)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(159.526014 131.256876)">(Act as ON/OFF gates)</text>
-   </g>
-   <g id="text_3">
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(272.534076 75.278398)">Step 3: 3-Phase Plan</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(278.674795 83.476382)">(actor1..4 latch)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(270.48717 91.63771)">---------------------</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(276.627888 99.835695)">1. Reverse to wall</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(274.580982 108.033679)">2. Full launch left</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(274.580982 116.231663)">3. Turn OFF at goal</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(266.393357 124.393523)">   (both switches = -1)</text>
-   </g>
-   <g id="text_4">
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(380.474981 75.29646)">Step 4: Safe Handover</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(384.568794 83.45832)">(actor_head output)</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(380.474981 91.619648)">---------------------</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(382.521887 99.781507)">Overrides car during</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(384.568794 107.943366)">backup &amp; ramp jump,</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(384.568794 116.141351)">then cancels to 0.0</text>
-    <text style="font-size: 6.8px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; fill: #1b1f1d" transform="translate(386.6157 124.339335)">at the green goal!</text>
-   </g>
-   <g id="patch_12">
-    <path d="M 141.243162 95.086452 
-Q 146.056199 95.086452 149.527596 95.086452 
-" style="fill: none; stroke: #1b1f1d; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 145.727596 93.186452 
-L 149.527596 95.086452 
-L 145.727596 96.986452 
-" style="fill: none; stroke: #1b1f1d; stroke-width: 1.2; stroke-linecap: round"/>
-   </g>
-   <g id="patch_13">
-    <path d="M 254.151004 97.062968 
-Q 258.964041 97.062968 262.435438 97.062968 
-" style="fill: none; stroke: #1b1f1d; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 258.635438 95.162968 
-L 262.435438 97.062968 
-L 258.635438 98.962968 
-" style="fill: none; stroke: #1b1f1d; stroke-width: 1.2; stroke-linecap: round"/>
-   </g>
-   <g id="patch_14">
-    <path d="M 363.165472 97.062968 
-Q 367.978509 97.062968 371.449906 97.062968 
-" style="fill: none; stroke: #1b1f1d; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 367.649906 95.162968 
-L 371.449906 97.062968 
-L 367.649906 98.962968 
-" style="fill: none; stroke: #1b1f1d; stroke-width: 1.2; stroke-linecap: round"/>
-   </g>
-   <g id="text_5">
-    <text style="font-size: 6.9px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #1b1f1d" transform="translate(152.652474 215.884856)">Untouched Original AI Brain (96.5% of weights stay identical!)</text>
-    <text style="font-size: 6.9px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #1b1f1d" transform="translate(95.166849 224.166743)">Why original AI failed (0% win): Drove straight at the steep hill with zero runway and got stuck.</text>
-    <text style="font-size: 6.9px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #1b1f1d" transform="translate(77.503927 232.448629)">How surgical edit fixes it (100% win): Backs up first, jumps hazard, then hands control back to original AI.</text>
-   </g>
-   <g id="text_6">
-    <text style="font-weight: 700; font-size: 10.5px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="38.016" y="31.744" transform="rotate(-0 38.016 31.744)">A. How 51 Weight Edits Wire a 3-Step Game Plan into the Network</text>
-   </g>
+
+  <!-- RIGHT PANEL: THE 3 GRAFTED SWITCHES -->
+  <g transform="translate(612, 82)">
+    <rect width="556" height="298" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="24" y="32" font-size="15" font-weight="800" fill="#0f172a">B. How the 3 Grafted Neural Switches Work Together</text>
+
+    <!-- Stage Card 1 -->
+    <rect x="24" y="52" width="508" height="68" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="2"/>
+    <rect x="38" y="68" width="130" height="34" rx="8" fill="#fef3c7"/>
+    <text x="103" y="90" text-anchor="middle" font-size="12.5" font-weight="800" fill="#b45309">Stage 1 (t = 0..12)</text>
+    <text x="184" y="78" font-size="13.5" font-weight="700" fill="#0f172a">Not at wall yet  ➔  Drive Backward (Right)</text>
+    <text x="184" y="99" font-size="12" fill="#475569">Overrides greedy brain so the car backs up to x = 3.88m.</text>
+
+    <!-- Stage Card 2 -->
+    <rect x="24" y="132" width="508" height="68" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="2"/>
+    <rect x="38" y="148" width="130" height="34" rx="8" fill="#dbeafe"/>
+    <text x="103" y="170" text-anchor="middle" font-size="12.5" font-weight="800" fill="#1d4ed8">Stage 2 (t = 13..25)</text>
+    <text x="184" y="158" font-size="13.5" font-weight="700" fill="#0f172a">Wall &amp; Speed Switches ON  ➔  Full Launch Left</text>
+    <text x="184" y="179" font-size="12" fill="#475569">Locks full left throttle (v = -1.81 m/s) to clear the red hazard.</text>
+
+    <!-- Stage Card 3 -->
+    <rect x="24" y="212" width="508" height="68" rx="10" fill="#ffffff" stroke="#bbf7d0" stroke-width="2"/>
+    <rect x="38" y="228" width="130" height="34" rx="8" fill="#dcfce7"/>
+    <text x="103" y="250" text-anchor="middle" font-size="12.5" font-weight="800" fill="#15803d">Stage 3 (t = 26..33)</text>
+    <text x="184" y="238" font-size="13.5" font-weight="700" fill="#0f172a">Goal Switch Turns OFF  ➔  Exact 0.0 Handover</text>
+    <text x="184" y="259" font-size="12" fill="#475569">Override wires cancel out (-200 + 200 = 0), letting original AI park.</text>
   </g>
-  <g id="axes_2">
-   <g id="patch_15">
-    <path d="M 584.63839 284.832 
-L 931.392 284.832 
-L 931.392 39.744 
-L 584.63839 39.744 
-z
-" style="fill: #ffffff"/>
-   </g>
-   <g id="matplotlib.axis_3">
-    <g id="xtick_1">
-     <g id="line2d_1">
-      <defs>
-       <path id="mb1748e3bb2" d="M 0 0 
-L 0 3.5 
-" style="stroke: #5a625e; stroke-width: 0.8"/>
-      </defs>
-      <g>
-       <use xlink:href="#mb1748e3bb2" x="625.286541" y="284.832" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_7">
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(611.170728 298.366961)">1. Start</text>
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(604.999884 307.489039)">(Too close)</text>
-     </g>
-    </g>
-    <g id="xtick_2">
-     <g id="line2d_2">
-      <g>
-       <use xlink:href="#mb1748e3bb2" x="691.650868" y="284.832" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_8">
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(672.888368 298.367555)">2. Backup</text>
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(666.641524 307.489039)">(Get runway)</text>
-     </g>
-    </g>
-    <g id="xtick_3">
-     <g id="line2d_3">
-      <g>
-       <use xlink:href="#mb1748e3bb2" x="758.015195" y="284.832" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_9">
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(739.997258 298.367555)">3. At Wall</text>
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(739.766289 307.489633)">(Launch!)</text>
-     </g>
-    </g>
-    <g id="xtick_4">
-     <g id="line2d_4">
-      <g>
-       <use xlink:href="#mb1748e3bb2" x="824.379522" y="284.832" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_10">
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(799.824991 298.367555)">4. Fast Climb</text>
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(804.988241 307.489633)">(Jump hill)</text>
-     </g>
-    </g>
-    <g id="xtick_5">
-     <g id="line2d_5">
-      <g>
-       <use xlink:href="#mb1748e3bb2" x="890.74385" y="284.832" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_11">
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(872.026475 298.367555)">5. At Goal</text>
-      <text style="font-size: 7.6px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #5a625e" transform="translate(871.152475 307.489039)">(Turn OFF)</text>
-     </g>
-    </g>
-   </g>
-   <g id="matplotlib.axis_4">
-    <g id="ytick_1">
-     <g id="line2d_6">
-      <path d="M 584.63839 271.300555 
-L 931.392 271.300555 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #e4e2da; stroke-width: 0.6; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_7">
-      <defs>
-       <path id="m14161dc4ee" d="M 0 0 
-L -3.5 0 
-" style="stroke: #5a625e; stroke-width: 0.8"/>
-      </defs>
-      <g>
-       <use xlink:href="#m14161dc4ee" x="584.63839" y="271.300555" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_12">
-      <text style="font-size: 8.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: end; fill: #5a625e" x="577.63839" y="274.415594" transform="rotate(-0 577.63839 274.415594)">−200</text>
-     </g>
-    </g>
-    <g id="ytick_2">
-     <g id="line2d_8">
-      <path d="M 584.63839 234.906626 
-L 931.392 234.906626 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #e4e2da; stroke-width: 0.6; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_9">
-      <g>
-       <use xlink:href="#m14161dc4ee" x="584.63839" y="234.906626" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_13">
-      <text style="font-size: 8.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: end; fill: #5a625e" x="577.63839" y="238.021665" transform="rotate(-0 577.63839 238.021665)">−100</text>
-     </g>
-    </g>
-    <g id="ytick_3">
-     <g id="line2d_10">
-      <path d="M 584.63839 198.512697 
-L 931.392 198.512697 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #e4e2da; stroke-width: 0.6; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_11">
-      <g>
-       <use xlink:href="#m14161dc4ee" x="584.63839" y="198.512697" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_14">
-      <text style="font-size: 8.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: end; fill: #5a625e" x="577.63839" y="201.627736" transform="rotate(-0 577.63839 201.627736)">0</text>
-     </g>
-    </g>
-    <g id="ytick_4">
-     <g id="line2d_12">
-      <path d="M 584.63839 162.118768 
-L 931.392 162.118768 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #e4e2da; stroke-width: 0.6; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_13">
-      <g>
-       <use xlink:href="#m14161dc4ee" x="584.63839" y="162.118768" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_15">
-      <text style="font-size: 8.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: end; fill: #5a625e" x="577.63839" y="165.233807" transform="rotate(-0 577.63839 165.233807)">100</text>
-     </g>
-    </g>
-    <g id="ytick_5">
-     <g id="line2d_14">
-      <path d="M 584.63839 125.724839 
-L 931.392 125.724839 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #e4e2da; stroke-width: 0.6; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_15">
-      <g>
-       <use xlink:href="#m14161dc4ee" x="584.63839" y="125.724839" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_16">
-      <text style="font-size: 8.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: end; fill: #5a625e" x="577.63839" y="128.839878" transform="rotate(-0 577.63839 128.839878)">200</text>
-     </g>
-    </g>
-    <g id="ytick_6">
-     <g id="line2d_16">
-      <path d="M 584.63839 89.33091 
-L 931.392 89.33091 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #e4e2da; stroke-width: 0.6; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_17">
-      <g>
-       <use xlink:href="#m14161dc4ee" x="584.63839" y="89.33091" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_17">
-      <text style="font-size: 8.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: end; fill: #5a625e" x="577.63839" y="92.445949" transform="rotate(-0 577.63839 92.445949)">300</text>
-     </g>
-    </g>
-    <g id="ytick_7">
-     <g id="line2d_18">
-      <path d="M 584.63839 52.936981 
-L 931.392 52.936981 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #e4e2da; stroke-width: 0.6; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_19">
-      <g>
-       <use xlink:href="#m14161dc4ee" x="584.63839" y="52.936981" style="fill: #5a625e; stroke: #5a625e; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_18">
-      <text style="font-size: 8.2px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: end; fill: #5a625e" x="577.63839" y="56.05202" transform="rotate(-0 577.63839 56.05202)">400</text>
-     </g>
-    </g>
-    <g id="text_19">
-     <text style="font-size: 9px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: middle; fill: #1b1f1d" x="548.953187" y="162.288" transform="rotate(-90 548.953187 162.288)">Steering signal strength (action logits)</text>
-    </g>
-   </g>
-   <g id="patch_16">
-    <path d="M 600.399918 198.512697 
-L 616.991 198.512697 
-L 616.991 273.455076 
-L 600.399918 273.455076 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #9aa09c"/>
-   </g>
-   <g id="patch_17">
-    <path d="M 666.764245 198.512697 
-L 683.355327 198.512697 
-L 683.355327 273.356812 
-L 666.764245 273.356812 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #9aa09c"/>
-   </g>
-   <g id="patch_18">
-    <path d="M 733.128572 198.512697 
-L 749.719654 198.512697 
-L 749.719654 273.691636 
-L 733.128572 273.691636 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #9aa09c"/>
-   </g>
-   <g id="patch_19">
-    <path d="M 799.4929 198.512697 
-L 816.083981 198.512697 
-L 816.083981 272.883691 
-L 799.4929 272.883691 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #9aa09c"/>
-   </g>
-   <g id="patch_20">
-    <path d="M 865.857227 198.512697 
-L 882.448309 198.512697 
-L 882.448309 200.073997 
-L 865.857227 200.073997 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #9aa09c"/>
-   </g>
-   <g id="patch_21">
-    <path d="M 616.991 198.512697 
-L 633.582082 198.512697 
-L 633.582082 269.626434 
-L 616.991 269.626434 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #1f4e78"/>
-   </g>
-   <g id="patch_22">
-    <path d="M 683.355327 198.512697 
-L 699.946409 198.512697 
-L 699.946409 266.704002 
-L 683.355327 266.704002 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #1f4e78"/>
-   </g>
-   <g id="patch_23">
-    <path d="M 749.719654 198.512697 
-L 766.310736 198.512697 
-L 766.310736 50.884364 
-L 749.719654 50.884364 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #1f4e78"/>
-   </g>
-   <g id="patch_24">
-    <path d="M 816.083981 198.512697 
-L 832.675063 198.512697 
-L 832.675063 52.820521 
-L 816.083981 52.820521 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #1f4e78"/>
-   </g>
-   <g id="patch_25">
-    <path d="M 882.448309 198.512697 
-L 899.03939 198.512697 
-L 899.03939 198.31617 
-L 882.448309 198.31617 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #1f4e78"/>
-   </g>
-   <g id="patch_26">
-    <path d="M 633.582082 198.512697 
-L 650.173163 198.512697 
-L 650.173163 51.957985 
-L 633.582082 51.957985 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #b03a2e"/>
-   </g>
-   <g id="patch_27">
-    <path d="M 699.946409 198.512697 
-L 716.537491 198.512697 
-L 716.537491 58.679943 
-L 699.946409 58.679943 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #b03a2e"/>
-   </g>
-   <g id="patch_28">
-    <path d="M 766.310736 198.512697 
-L 782.901818 198.512697 
-L 782.901818 270.703695 
-L 766.310736 270.703695 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #b03a2e"/>
-   </g>
-   <g id="patch_29">
-    <path d="M 832.675063 198.512697 
-L 849.266145 198.512697 
-L 849.266145 268.003265 
-L 832.675063 268.003265 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #b03a2e"/>
-   </g>
-   <g id="patch_30">
-    <path d="M 899.03939 198.512697 
-L 915.630472 198.512697 
-L 915.630472 195.382819 
-L 899.03939 195.382819 
-z
-" clip-path="url(#p884d6c8b54)" style="fill: #b03a2e"/>
-   </g>
-   <g id="line2d_20">
-    <path d="M 584.63839 198.512697 
-L 931.392 198.512697 
-" clip-path="url(#p884d6c8b54)" style="fill: none; stroke: #1b1f1d; stroke-width: 0.7; stroke-linecap: square"/>
-   </g>
-   <g id="patch_31">
-    <path d="M 584.63839 284.832 
-L 584.63839 39.744 
-" style="fill: none; stroke: #c8c5b8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
-   </g>
-   <g id="patch_32">
-    <path d="M 584.63839 284.832 
-L 931.392 284.832 
-" style="fill: none; stroke: #c8c5b8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
-   </g>
-   <g id="patch_33">
-    <path d="M 851.89722 135.848377 
-Q 870.759791 163.625245 888.994265 190.477184 
-" style="fill: none; stroke: #2b7252; stroke-linecap: round"/>
-    <path d="M 888.549829 187.152658 
-L 888.994265 190.477184 
-L 886.067983 188.838017 
-" style="fill: none; stroke: #2b7252; stroke-linecap: round"/>
-   </g>
-   <g id="text_20">
-    <g id="patch_34">
-     <path d="M 767.969844 133.791722 
-L 912.145625 133.791722 
-Q 914.020625 133.791722 914.020625 131.916722 
-L 914.020625 104.91057 
-Q 914.020625 103.03557 912.145625 103.03557 
-L 767.969844 103.03557 
-Q 766.094844 103.03557 766.094844 104.91057 
-L 766.094844 131.916722 
-Q 766.094844 133.791722 767.969844 133.791722 
-z
-" style="fill: #fbfaf6; stroke: #2b7252; stroke-width: 0.8; stroke-linejoin: miter"/>
-    </g>
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #1b1f1d" transform="translate(767.969844 111.360131)">Stage 5 (Goal Reached):</text>
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #1b1f1d" transform="translate(767.969844 120.362181)">Override switches cancel to exact 0.0!</text>
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; fill: #1b1f1d" transform="translate(767.969844 129.364232)">Original AI takes over to park safely.</text>
-   </g>
-   <g id="text_21">
-    <text style="font-weight: 700; font-size: 10.5px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="584.63839" y="31.744" transform="rotate(-0 584.63839 31.744)">B. What the Edited Brain Chooses at Each Stage</text>
-   </g>
-   <g id="legend_1">
-    <g id="patch_35">
-     <path d="M 589.81839 281.132 
-L 731.263609 281.132 
-Q 732.743609 281.132 732.743609 279.652 
-L 732.743609 247.090266 
-Q 732.743609 245.610266 731.263609 245.610266 
-L 589.81839 245.610266 
-Q 588.33839 245.610266 588.33839 247.090266 
-L 588.33839 279.652 
-Q 588.33839 281.132 589.81839 281.132 
-z
-" style="fill: #ffffff; opacity: 0.8; stroke: #c8c5b8; stroke-linejoin: miter"/>
-    </g>
-    <g id="patch_36">
-     <path d="M 591.29839 254.193109 
-L 606.09839 254.193109 
-L 606.09839 249.013109 
-L 591.29839 249.013109 
-z
-" style="fill: #9aa09c"/>
-    </g>
-    <g id="text_22">
-     <text style="font-size: 7.4px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="612.01839" y="254.193109" transform="rotate(-0 612.01839 254.193109)">Coast (Motor Off)</text>
-    </g>
-    <g id="patch_37">
-     <path d="M 591.29839 265.293687 
-L 606.09839 265.293687 
-L 606.09839 260.113687 
-L 591.29839 260.113687 
-z
-" style="fill: #1f4e78"/>
-    </g>
-    <g id="text_23">
-     <text style="font-size: 7.4px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="612.01839" y="265.293687" transform="rotate(-0 612.01839 265.293687)">Drive Left (Launch Up Ramp)</text>
-    </g>
-    <g id="patch_38">
-     <path d="M 591.29839 276.394266 
-L 606.09839 276.394266 
-L 606.09839 271.214266 
-L 591.29839 271.214266 
-z
-" style="fill: #b03a2e"/>
-    </g>
-    <g id="text_24">
-     <text style="font-size: 7.4px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', sans-serif; text-anchor: start; fill: #1b1f1d" x="612.01839" y="276.394266" transform="rotate(-0 612.01839 276.394266)">Reverse Right (Back Up to Wall)</text>
-    </g>
-   </g>
-  </g>
- </g>
- <defs>
-  <clipPath id="p0e3c2f4324">
-   <rect x="38.016" y="39.744" width="443.84462" height="245.088"/>
-  </clipPath>
-  <clipPath id="p884d6c8b54">
-   <rect x="584.63839" y="39.744" width="346.75361" height="245.088"/>
-  </clipPath>
- </defs>
 </svg>

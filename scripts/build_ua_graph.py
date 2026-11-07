@@ -1187,6 +1187,16 @@ def main() -> None:
     (DEMO_DIR / "domain-graph.json").write_text(json.dumps(dg, indent=2), encoding="utf-8")
     (DEMO_DIR / "meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
     (DEMO_DIR / "config.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
+    (DEMO_DIR / "diff-overlay.json").write_text("null\n", encoding="utf-8")
+
+    # Ensure docs/demo/index.html pre-dismisses the blocking onboarding overlay so the graph is immediately visible
+    demo_index = DEMO_DIR / "index.html"
+    if demo_index.exists():
+        html = demo_index.read_text(encoding="utf-8")
+        inject = '<script>try{localStorage.setItem("ua-onboarding-dismissed-v1","1");}catch(e){}</script>'
+        if "ua-onboarding-dismissed-v1" not in html:
+            html = html.replace("<head>", "<head>\n    " + inject, 1)
+            demo_index.write_text(html, encoding="utf-8")
 
     num_sources = export_static_sources(kg, DEMO_DIR)
     print(f"Generated .ua/knowledge-graph.json ({len(kg['nodes'])} nodes, {len(kg['edges'])} edges, {len(kg['tour'])} tour steps)")
