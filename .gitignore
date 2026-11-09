@@ -10,4 +10,5 @@ venv/
 .env
 *.pt
 *.safetensors
-graphify-out/cache/
+graphify-out/
+.ua/
